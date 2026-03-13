@@ -1,0 +1,26 @@
+{
+   "name": "web3-e2e-testing",
+   "version": "1.0.0",
+   "description": "",
+   "type": "module",
+   "main": "index.js",
+   "scripts": {
+      "format": "prettier --write .",
+      "format:check": "prettier --check .",
+      "lint": "npm run format:check && npx tsc --noEmit"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "devDependencies": {
+      "@playwright/test": "1.48.2",
+      "@synthetixio/synpress": "4.1.1",
+      "@synthetixio/synpress-tsconfig": "^0.0.14",
+      "@types/node": "^25.5.0",
+      "dotenv": "^17.3.1",
+      "ethers": "^5.8.0",
+      "prettier": "^3.8.1",
+      "prettier-plugin-organize-imports": "^4.3.0",
+      "typescript": "^5.9.3"
+   }
+}
