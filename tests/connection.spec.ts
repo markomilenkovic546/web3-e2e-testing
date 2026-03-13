@@ -1,6 +1,10 @@
 import { expect, test } from './fixtures';
 
 test.describe('Connection', () => {
+   test.beforeEach(async ({ mintingPage }) => {
+      await mintingPage.goto();
+   });
+
    test('User can connect the wallet', async ({
       mintingPage,
       metamask,
@@ -8,7 +12,6 @@ test.describe('Connection', () => {
    }) => {
       const address = await masterAccount();
 
-      await mintingPage.goto();
       await mintingPage.connectWallet();
 
       await metamask.connectToDapp();
@@ -39,7 +42,6 @@ test.describe('Connection', () => {
    }) => {
       // 1. Setup: Connect the wallet first
       await masterAccount();
-      await mintingPage.goto();
       await mintingPage.connectWallet();
       await metamask.connectToDapp();
       // 2. Action: Click on account button and then disconnect
@@ -64,7 +66,6 @@ test.describe('Connection', () => {
    }) => {
       // 1. Setup: Connect the wallet first on the correct network (Amoy)
       const address = await masterAccount();
-      await mintingPage.goto();
       await mintingPage.connectWallet();
       await metamask.connectToDapp();
 
