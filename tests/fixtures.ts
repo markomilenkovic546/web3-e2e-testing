@@ -52,11 +52,8 @@ export const test = testWithSynpress(metaMaskFixtures(basicSetup)).extend<Fixtur
          const fundTx = await masterWallet.sendTransaction({
             to: tempAddress,
             value: ethers.utils.parseEther(fundAmount),
-            maxFeePerGas: ethers.utils.parseUnits(process.env.MAX_FEE_GWEI!, 'gwei'),
-            maxPriorityFeePerGas: ethers.utils.parseUnits(
-               process.env.MAX_PRIORITY_FEE_GWEI!,
-               'gwei',
-            ),
+            gasPrice: ethers.utils.parseUnits(process.env.GAS_PRICE_GWEI!, 'gwei'),
+            gasLimit: Number(process.env.GAS_LIMIT!),
          });
          await fundTx.wait();
          console.log(`[Fixture] Temp account funded!`);
