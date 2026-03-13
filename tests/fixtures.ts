@@ -12,6 +12,7 @@ type Fixtures = {
    mintingPage: MintingPage;
    metamask: MetaMask;
    mintAccount: (fundAmount: string) => Promise<string>; // Returns the address
+   masterAccount: () => Promise<string>; // Returns the address
 };
 
 export const test = testWithSynpress(metaMaskFixtures(basicSetup)).extend<Fixtures>({
@@ -21,6 +22,17 @@ export const test = testWithSynpress(metaMaskFixtures(basicSetup)).extend<Fixtur
    metamask: async ({ context, metamaskPage, extensionId }, use) => {
       const metamask = new MetaMask(context, metamaskPage, basicSetup.walletPassword, extensionId);
       await use(metamask);
+   },
+   masterAccount: async ({ metamask }, use) => {
+      const provider = new ethers.providers.JsonRpcProvider(AMOY_RPC_URL);
+      const masterWallet = new ethers.Wallet(MASTER_PRIVATE_KEY, provider);
+      const masterAddress = await masterWallet.getAddress();
+
+      console.log(`[Fixture] Ensuring Account 1 (Master) is active: ${masterAddress}`);
+      // Account 1 is imported by default from the seed phrase in basic.setup.ts
+      await metamask.switchAccount('Account 1');
+
+      await use(async () => masterAddress);
    },
    mintAccount: async ({ metamask }, use) => {
       const provider = new ethers.providers.JsonRpcProvider(AMOY_RPC_URL);
