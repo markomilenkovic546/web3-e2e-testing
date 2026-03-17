@@ -1,11 +1,12 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '../../tests/fixtures';
 
-export class ShowcaseModal {
+export class NftGalleryModal {
    readonly page: Page;
    readonly container: Locator;
    readonly closeModalBtn: Locator;
    readonly disconnectBtn: Locator;
+   readonly nftItemButton: (nftId: number) =>  Locator;
    readonly nftCard: Locator;
    readonly nftCardTitle: Locator;
    readonly nftCardDescription: Locator;
@@ -17,6 +18,7 @@ export class ShowcaseModal {
       this.container = page.locator('[data-cy="container-nft-gallery"]');
       this.closeModalBtn = page.locator('[data-cy="btn-modal-close"]');
       this.disconnectBtn = page.locator('[data-cy="btn-disconnect"]');
+      this.nftItemButton = (nftId) =>  page.locator(`[data-cy="btn-nft-item-${nftId}"]`)
       this.nftCard = page.locator('[data-cy="nft-card"]');
       this.nftCardTitle = page.locator('[data-cy="nft-card"] h4');
       this.nftCardDescription = page.locator('[data-cy="nft-card"] p');
@@ -48,6 +50,15 @@ export class ShowcaseModal {
       await nftItem.click();
    }
 
+   /**
+    * Selects an NFT item by clicking its button.
+    * @param {number} nftId - The ID of the NFT.
+    */
+   async selectNftItem(nftId: number) {
+      await this.expectNftItemButtonIsVisible(nftId);
+      await this.nftItemButton(nftId).click();
+   }
+
    // --------------------------------------------------------------------------
    // Assertions
    // --------------------------------------------------------------------------
@@ -55,19 +66,19 @@ export class ShowcaseModal {
    // --- Modal Controls ---
 
    /**
-    * Asserts that the showcase container is visible.
+    * Asserts that the NFT Gallery container is visible.
     */
    async expectContainerIsVisible() {
-      await expect(this.container, 'Showcase container[container] is missing or not visible').toBeVisible();
-      console.log('Showcase container is visible');
+      await expect(this.container, 'NFT Gallery container[container] is missing or not visible').toBeVisible();
+      console.log('NFT Gallery container is visible');
    }
 
    /**
-    * Asserts that the showcase container is not visible.
+    * Asserts that the NFT Gallery container is not visible.
     */
    async expectContainerIsNotVisible() {
-      await expect(this.container, 'Showcase container[container] should not be visible').toBeHidden();
-      console.log('Showcase container is not visible');
+      await expect(this.container, 'NFT Gallery container[container] should not be visible').toBeHidden();
+      console.log('NFT Gallery container is not visible');
    }
 
    /**
@@ -110,5 +121,41 @@ export class ShowcaseModal {
    async expectNftCardIsNotVisible() {
       await expect(this.nftCard, 'NFT card[nftCard] should not be visible').toBeHidden();
       console.log('NFT card is not visible');
+   }
+
+   /**
+    * Asserts that the NFT item button is visible.
+    * @param {number} nftId - The ID of the NFT.
+    */
+   async expectNftItemButtonIsVisible(nftId: number) {
+      await expect(this.nftItemButton(nftId), `NFT item button for ID ${nftId} is missing or not visible`).toBeVisible();
+      console.log(`NFT item button for ID ${nftId} is visible`);
+   }
+
+   /**
+    * Asserts that the NFT ID matches the expected value.
+    * @param {string} nftId - The expected NFT ID.
+    */
+   async expectNftId(nftId: string) {
+      await expect(this.nftId, 'Incorrect NFT ID is displayed').toHaveText(nftId);
+      console.log('Correct NFT ID is displayed:', await this.nftId.textContent());
+   }
+
+   /**
+    * Asserts that the NFT card title matches the expected value.
+    * @param {string} title - The expected title.
+    */
+   async expectNftCardTitle(title: string) {
+      await expect(this.nftCardTitle, 'Incorrect NFT card title is displayed').toHaveText(title);
+      console.log('Correct NFT card title is displayed:', await this.nftCardTitle.textContent());
+   }
+
+   /**
+    * Asserts that the NFT image alt text matches the expected value.
+    * @param {string} alt - The expected alt text.
+    */
+   async expectNftImageAltText(alt: string) {
+      await expect(this.nftImage, 'Incorrect NFT image alt text is displayed').toHaveAttribute('alt', alt);
+      console.log('Correct NFT image alt text is displayed');
    }
 }

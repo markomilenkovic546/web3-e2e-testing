@@ -67,6 +67,34 @@ export class MintingModal {
       await this.mintBtn.click();
    }
 
+   /**
+    * Clicks on the claimed NFT button.
+    */
+   async clickOnClaimedNft() {
+      await this.expectClaimedNftBtnIsVisible();
+      await this.claimedNftBtn.click();
+   }
+
+   /**
+    * Returns the NFT ID from the claimed NFT button.
+    * @returns {Promise<string>} - The NFT ID.
+    */
+   async getClaimedNftId(): Promise<string> {
+      const nftId = await this.claimedNftBtn.getAttribute('data-nft-id');
+      if (!nftId) throw new Error('NFT ID not found on claimed NFT button');
+      return nftId;
+   }
+
+   /**
+    * Returns the NFT Alt text (which contains the name) from the claimed NFT image.
+    * @returns {Promise<string>} - The Alt text.
+    */
+   async getClaimedNftAltText(): Promise<string> {
+      const altText = await this.claimedNftBtn.locator('[data-cy="img-nft-cat"]').getAttribute('alt');
+      if (!altText) throw new Error('Alt text not found on claimed NFT image');
+      return altText;
+   }
+
    // --------------------------------------------------------------------------
    // Assertions
    // --------------------------------------------------------------------------

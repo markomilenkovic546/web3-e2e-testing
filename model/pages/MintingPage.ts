@@ -2,8 +2,9 @@ import type { Locator, Page } from '@playwright/test';
 import { expect } from '../../tests/fixtures';
 import { Header } from '../components/Header';
 import { MintingModal } from '../components/MintingModal';
-import { ShowcaseModal } from '../components/ShowcaseModal';
+import { NftGalleryModal } from '../components/NftGalleryModal';
 import { BalanceCheckModal } from '../components/BalanceCheckModal';
+import { NftCardModal } from '../components/NftCardModal';
 
 /**
  * Represents the Minting Page and its components.
@@ -11,9 +12,10 @@ import { BalanceCheckModal } from '../components/BalanceCheckModal';
 export class MintingPage {
    readonly page: Page;
    readonly header: Header;
-   readonly showcaseModal: ShowcaseModal;
+   readonly nftGalleryModal: NftGalleryModal;
    readonly mintingModal: MintingModal;
    readonly balanceCheckModal: BalanceCheckModal;
+   readonly nftCardModal: NftCardModal;
    readonly notConnectedMessage: Locator;
    readonly testNetDisclamer: Locator;
    readonly wrongNetworkMessage: Locator;
@@ -22,9 +24,10 @@ export class MintingPage {
    constructor(page: Page) {
       this.page = page;
       this.header = new Header(page);
-      this.showcaseModal = new ShowcaseModal(page);
+      this.nftGalleryModal = new NftGalleryModal(page);
       this.mintingModal = new MintingModal(page);
       this.balanceCheckModal = new BalanceCheckModal(page);
+      this.nftCardModal = new NftCardModal(page);
       this.notConnectedMessage = page.locator('[data-cy="notice-not-connected"]').locator('span', { hasText: 'Not connected!' })
       this.testNetDisclamer = page.locator('[data-cy="notice-not-connected"]', { hasText: '*Minting on this site uses testnet, so no real money is spent, letting you try NFT minting without financial risk.' })
       this.wrongNetworkMessage = page.locator('span', { hasText: 'Wrong network!'})
