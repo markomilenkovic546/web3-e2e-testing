@@ -21,11 +21,13 @@ export class Header {
    async clickConnect() {
       await this.expectConnectWalletBtnIsVisible();
       await this.connectWalletBtn.click();
+      console.log('Connect Wallet button is clicked');
    }
 
    async clickAccount() {
       await this.expectAccountBtnIsVisible();
       await this.accountBtn.click();
+      console.log('Account button is clicked');
    }
 
    // --------------------------------------------------------------------------

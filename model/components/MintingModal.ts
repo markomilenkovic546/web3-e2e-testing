@@ -41,6 +41,7 @@ export class MintingModal {
    async increaseQuantity() {
       await this.expectIncreaseQuantityBtnIsVisible();
       await this.increaseQuantityBtn.click();
+      console.log('Increase quantity button is clicked');
    }
 
    /**
@@ -49,6 +50,7 @@ export class MintingModal {
    async decreaseQuantity() {
       await this.expectDecreaseQuantityBtnIsVisible();
       await this.decreaseQuantityBtn.click();
+      console.log('Decrease quantity button is clicked');
    }
 
    /**
@@ -65,6 +67,7 @@ export class MintingModal {
    async mint() {
       await this.expectMintBtnIsVisible();
       await this.mintBtn.click();
+      console.log('Mint button is clicked');
    }
 
    /**
@@ -73,6 +76,7 @@ export class MintingModal {
    async clickOnClaimedNft() {
       await this.expectClaimedNftBtnIsVisible();
       await this.claimedNftBtn.click();
+      console.log('Claimed NFT button is clicked');
    }
 
    /**

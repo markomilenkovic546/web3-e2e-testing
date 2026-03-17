@@ -8,6 +8,7 @@ export class NftCardModal {
    readonly nftCardTitle: Locator;
    readonly nftImage: Locator;
    readonly nftGalleryButton: Locator;
+   readonly closeModalBtn: Locator;
 
    constructor(page: Page) {
       this.page = page;
@@ -15,7 +16,8 @@ export class NftCardModal {
       this.nftId = page.locator('[data-cy="href-nft"]');
       this.nftCardTitle = page.locator('h4.font-semibold');
       this.nftImage = page.locator('figure img.inset-0');
-      this.nftGalleryButton = page.locator('[data-cy="btn-gallery-open"]')
+      this.nftGalleryButton = page.locator('[data-cy="btn-gallery-open"]');
+      this.closeModalBtn = page.locator('[data-cy="btn-modal-close"]');
    }
 
    // --------------------------------------------------------------------------
@@ -28,6 +30,16 @@ export class NftCardModal {
    async openNFTGallery() {
       await this.expectNftGalleryButtonIsVisible();
       await this.nftGalleryButton.click();
+      console.log('NFT Gallery button is clicked');
+   }
+
+   /**
+    * Closes the NFT card modal.
+    */
+   async close() {
+      await this.expectCloseModalBtnIsVisible();
+      await this.closeModalBtn.click();
+      console.log('Close NFT card modal button is clicked');
    }
 
    // --------------------------------------------------------------------------
@@ -75,5 +87,13 @@ export class NftCardModal {
    async expectNftGalleryButtonIsVisible() {
       await expect(this.nftGalleryButton, 'NFT Gallery button is missing or not visible').toBeVisible();
       console.log('NFT Gallery button is visible');
+   }
+
+   /**
+    * Asserts that the close modal button is visible.
+    */
+   async expectCloseModalBtnIsVisible() {
+      await expect(this.closeModalBtn, 'Close modal button is missing or not visible').toBeVisible();
+      console.log('Close modal button is visible');
    }
 }

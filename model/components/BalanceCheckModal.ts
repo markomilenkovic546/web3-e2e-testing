@@ -19,6 +19,7 @@ export class BalanceCheckModal {
    async recheckBalance() {
       await this.expectRecheckBtnIsVisible();
       await this.recheckBtn.click();
+      console.log('Recheck balance button is clicked');
    }
 
    // --------------------------------------------------------------------------

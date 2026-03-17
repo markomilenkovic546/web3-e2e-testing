@@ -6,7 +6,7 @@ export class NftGalleryModal {
    readonly container: Locator;
    readonly closeModalBtn: Locator;
    readonly disconnectBtn: Locator;
-   readonly nftItemButton: (nftId: number) =>  Locator;
+   readonly nftItemButton: (nftId: string) =>  Locator;
    readonly nftCard: Locator;
    readonly nftCardTitle: Locator;
    readonly nftCardDescription: Locator;
@@ -33,11 +33,13 @@ export class NftGalleryModal {
    async close() {
       await this.expectCloseModalBtnIsVisible();
       await this.closeModalBtn.click();
+      console.log('Close NFT Gallery modal button is clicked');
    }
 
    async disconnect() {
       await this.expectDisconnectBtnIsVisible();
       await this.disconnectBtn.click();
+      console.log('Disconnect button is clicked');
    }
 
    getNftItem(nftId: string): Locator {
@@ -48,15 +50,17 @@ export class NftGalleryModal {
       const nftItem = this.getNftItem(nftId);
       await expect(nftItem, `NFT item with ID ${nftId}[nftItem] is missing or not visible`).toBeVisible();
       await nftItem.click();
+      console.log(`NFT item with ID ${nftId} is clicked`);
    }
 
    /**
     * Selects an NFT item by clicking its button.
-    * @param {number} nftId - The ID of the NFT.
+    * @param {string} nftId - The ID of the NFT.
     */
-   async selectNftItem(nftId: number) {
+   async selectNftItem(nftId: string) {
       await this.expectNftItemButtonIsVisible(nftId);
       await this.nftItemButton(nftId).click();
+      console.log(`NFT item button for ID ${nftId} is clicked`);
    }
 
    // --------------------------------------------------------------------------
@@ -125,9 +129,9 @@ export class NftGalleryModal {
 
    /**
     * Asserts that the NFT item button is visible.
-    * @param {number} nftId - The ID of the NFT.
+    * @param {string} nftId - The ID of the NFT.
     */
-   async expectNftItemButtonIsVisible(nftId: number) {
+   async expectNftItemButtonIsVisible(nftId: string) {
       await expect(this.nftItemButton(nftId), `NFT item button for ID ${nftId} is missing or not visible`).toBeVisible();
       console.log(`NFT item button for ID ${nftId} is visible`);
    }

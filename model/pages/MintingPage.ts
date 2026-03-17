@@ -53,6 +53,7 @@ export class MintingPage {
       const metamaskOption = this.page.locator('[data-testid="rk-wallet-option-io.metamask"]');
       await expect(metamaskOption, 'MetaMask option[metamaskOption] is missing or not visible').toBeVisible();
       await metamaskOption.click();
+      console.log('MetaMask wallet option is clicked');
    }
 
    /**
@@ -61,6 +62,7 @@ export class MintingPage {
    async switchNetwork() {
       await this.expectSwitchNetworkBtnIsVisible();
       await this.switchNetworkBtn.click();
+      console.log('Switch Network button is clicked');
    }
 
    // --------------------------------------------------------------------------
