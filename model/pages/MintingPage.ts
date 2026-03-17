@@ -47,7 +47,7 @@ export class MintingPage {
     */
    async connectWallet() {
       await this.header.clickConnect();
-      const metamaskOption = this.page.locator('[data-testid="rk-wallet-option-io.metamassk"]');
+      const metamaskOption = this.page.locator('[data-testid="rk-wallet-option-io.metamask"]');
       await expect(metamaskOption, 'MetaMask option[metamaskOption] is missing or not visible').toBeVisible();
       await metamaskOption.click();
    }
