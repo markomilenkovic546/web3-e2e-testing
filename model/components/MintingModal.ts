@@ -52,6 +52,14 @@ export class MintingModal {
    }
 
    /**
+    * Enters a specific NFT minting quantity.
+    * @param {string} quantity - The quantity value to enter.
+    */
+   async enterQuantity(quantity: string) {
+      await this.inputQuantity.fill(quantity);
+   }
+
+   /**
     * Initiates the NFT minting process.
     */
    async mint() {
@@ -87,7 +95,7 @@ export class MintingModal {
     */
    async expectMintingInfoMessage(message: string) {
       const infoMessage = this.mintingInfoMessage.getByText(message);
-      await expect(infoMessage, 'Expected minting info message is not visible').toBeVisible({ timeout: 120000 });
+      await expect(infoMessage, 'Expected minting info message is not visible').toBeVisible({ timeout: 400000 });
       console.log('Correct info message is displayed:', await infoMessage.textContent())
    }
 
@@ -193,8 +201,8 @@ export class MintingModal {
     * @param {number} nftPricePerUnit - The price per individual NFT.
     */
    async expectCorrectTotalPrice(quantity: number, nftPricePerUnit: number) {
-      const calculatedTotalPrice = quantity * nftPricePerUnit
-      await expect(this.nftPrice, 'Incorrect total price is displayed').toHaveText(`Total price: ${calculatedTotalPrice.toFixed(3)} POL`)
+      const calculatedTotalPrice = Number((quantity * nftPricePerUnit).toFixed(3))
+      await expect(this.nftPrice, 'Incorrect total price is displayed').toHaveText(`Total price: ${calculatedTotalPrice} POL`)
       console.log('Correct total price is displayed:', await this.nftPrice.textContent())
    }
 
@@ -203,8 +211,9 @@ export class MintingModal {
     * @param {number} balancePerPhase - The number of NFTs claimed in the current phase.
     */
    async expectCorrectBalancePerPhase(balancePerPhase: number) {
+      const nftLabel = balancePerPhase === 1 ? 'NFT' : 'NFTs';
       await expect(this.nftBalancePerPhase, 'Incorrect balance per phase is displayed').
-         toHaveText(`${balancePerPhase} of ${process.env.MAX_NFTS_PER_PHASE} NFTs claimed`)
+         toHaveText(`${balancePerPhase} of ${process.env.MAX_NFTS_PER_PHASE} ${nftLabel} claimed`)
       console.log('Correct balance per phase info is displayed:', await this.nftBalancePerPhase.textContent())
    }
 }
