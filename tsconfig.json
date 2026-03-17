@@ -1,6 +1,7 @@
 {
    "extends": "@synthetixio/synpress-tsconfig/base.json",
    "compilerOptions": {
+      "module": "esnext",
       "outDir": "dist",
       "rootDir": ".",
       "skipLibCheck": true,
