@@ -3,9 +3,11 @@ import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import { ethers } from 'ethers';
 import { MintingPage } from '../model/pages/MintingPage';
 import basicSetup from '../test/wallet-setup/basic.setup';
+import abi from '../abi.json' with { type: 'json' };
 
 const MASTER_PRIVATE_KEY = process.env.MASTER_PRIVATE_KEY!;
 const AMOY_RPC_URL = process.env.AMOY_RPC_URL!;
+const CONTRACT_ADDRESS = process.env.SMART_CONTRACT_ADDRESS!;
 
 // Define the fixture types
 type Fixtures = {
@@ -13,6 +15,8 @@ type Fixtures = {
    metamask: MetaMask;
    mintAccount: (fundAmount: string) => Promise<string>; // Returns the address
    masterAccount: () => Promise<string>; // Returns the address
+   getNftOwner: (nftId: string) => Promise<string>;
+   getTotalMintedValue: () => Promise<string>;
 };
 
 export const test = testWithSynpress(metaMaskFixtures(basicSetup)).extend<Fixtures>({
@@ -109,6 +113,21 @@ export const test = testWithSynpress(metaMaskFixtures(basicSetup)).extend<Fixtur
             }
          }
       }
+   },
+   getNftOwner: async ({}, use) => {
+      const provider = new ethers.providers.JsonRpcProvider(AMOY_RPC_URL);
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
+      await use(async (nftId: string) => {
+         return await contract.ownerOf(nftId);
+      });
+   },
+   getTotalMintedValue: async ({}, use) => {
+      const provider = new ethers.providers.JsonRpcProvider(AMOY_RPC_URL);
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
+      await use(async () => {
+         const totalMinted = await contract.totalMinted();
+         return totalMinted.toString();
+      });
    },
 });
 
