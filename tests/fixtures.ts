@@ -3,16 +3,15 @@ import { MetaMask, metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import { ethers } from 'ethers';
 import { MintingPage } from '../model/pages/MintingPage';
 import basicSetup from '../test/wallet-setup/basic.setup';
-import abi from '../abi.json' with { type: 'json' };
+import BlockchainUtils from '../utils/blockchain';
 
 const MASTER_PRIVATE_KEY = process.env.MASTER_PRIVATE_KEY!;
-const AMOY_RPC_URL = process.env.AMOY_RPC_URL!;
-const CONTRACT_ADDRESS = process.env.SMART_CONTRACT_ADDRESS!;
 
 // Define the fixture types
 type Fixtures = {
    mintingPage: MintingPage;
    metamask: MetaMask;
+   blockchainUtils: BlockchainUtils;
    mintAccount: (fundAmount: string) => Promise<string>; // Returns the address
    masterAccount: () => Promise<string>; // Returns the address
    getNftOwner: (nftId: string) => Promise<string>;
@@ -27,10 +26,11 @@ export const test = testWithSynpress(metaMaskFixtures(basicSetup)).extend<Fixtur
       const metamask = new MetaMask(context, metamaskPage, basicSetup.walletPassword, extensionId);
       await use(metamask);
    },
-   masterAccount: async ({ metamask }, use) => {
-      const provider = new ethers.providers.JsonRpcProvider(AMOY_RPC_URL);
-      const masterWallet = new ethers.Wallet(MASTER_PRIVATE_KEY, provider);
-      const masterAddress = await masterWallet.getAddress();
+   blockchainUtils: async ({}, use) => {
+      await use(new BlockchainUtils());
+   },
+   masterAccount: async ({ metamask, blockchainUtils }, use) => {
+      const masterAddress = await blockchainUtils.getMasterAddress(MASTER_PRIVATE_KEY);
 
       console.log(`[Fixture] Ensuring Account 1 (Master) is active: ${masterAddress}`);
       // Account 1 is imported by default from the seed phrase in basic.setup.ts
@@ -38,31 +38,16 @@ export const test = testWithSynpress(metaMaskFixtures(basicSetup)).extend<Fixtur
 
       await use(async () => masterAddress);
    },
-   mintAccount: async ({ metamask }, use) => {
-      const provider = new ethers.providers.JsonRpcProvider(AMOY_RPC_URL);
-      const masterWallet = new ethers.Wallet(MASTER_PRIVATE_KEY, provider);
-      const masterAddress = await masterWallet.getAddress();
-
+   mintAccount: async ({ metamask, blockchainUtils }, use) => {
+      const masterAddress = await blockchainUtils.getMasterAddress(MASTER_PRIVATE_KEY);
       let tempWallet: ethers.Wallet | undefined;
 
       const createFundedAccount = async (fundAmount: string) => {
-         // 1. Generate a brand new random wallet
-         tempWallet = ethers.Wallet.createRandom().connect(provider);
+         tempWallet = blockchainUtils.createRandomWallet();
          const tempAddress = await tempWallet.getAddress();
-         console.log(`[Fixture] Creating fresh account: ${tempAddress}`);
+         
+         await blockchainUtils.fundAccount(MASTER_PRIVATE_KEY, tempAddress, fundAmount);
 
-         // 2. Fund the temp account from Master with specified amount
-         console.log(`[Fixture] Funding ${tempAddress} with ${fundAmount} POL from Master...`);
-         const fundTx = await masterWallet.sendTransaction({
-            to: tempAddress,
-            value: ethers.utils.parseEther(fundAmount),
-            gasPrice: ethers.utils.parseUnits(process.env.GAS_PRICE_GWEI!, 'gwei'),
-            gasLimit: Number(process.env.GAS_LIMIT!),
-         });
-         await fundTx.wait();
-         console.log(`[Fixture] Temp account funded!`);
-
-         // 3. Import this private key into MetaMask UI
          console.log(`[Fixture] Importing account into MetaMask...`);
          await metamask.importWalletFromPrivateKey(tempWallet.privateKey);
 
@@ -72,62 +57,18 @@ export const test = testWithSynpress(metaMaskFixtures(basicSetup)).extend<Fixtur
          return tempAddress;
       };
 
-      // Pass the function to the test
       await use(createFundedAccount);
 
-      // AFTER TEST: Sweep remaining funds from the created wallet back to Master
       if (tempWallet) {
-         const address = await tempWallet.getAddress();
-         const balanceBefore = await provider.getBalance(address);
-         console.log(
-            `[Sweep] Balance BEFORE sweeping: ${ethers.utils.formatEther(balanceBefore)} POL`,
-         );
-
-         if (balanceBefore.gt(0)) {
-            console.log(`[Sweep] Sweeping remaining balance from ${address} back to Master...`);
-
-            const gasPrice = ethers.utils.parseUnits(process.env.GAS_PRICE_GWEI!, 'gwei');
-            const gasLimit = Number(process.env.GAS_LIMIT!);
-            const gasCost = gasPrice.mul(gasLimit);
-
-            if (balanceBefore.gt(gasCost)) {
-               const sweepAmount = balanceBefore.sub(gasCost);
-               try {
-                  const sweepTx = await tempWallet.sendTransaction({
-                     to: masterAddress,
-                     value: sweepAmount,
-                     gasPrice: gasPrice,
-                     gasLimit: gasLimit,
-                  });
-                  await sweepTx.wait();
-
-                  const balanceAfter = await provider.getBalance(address);
-                  console.log(
-                     `[Sweep] Final balance of fresh address: ${ethers.utils.formatEther(balanceAfter)} POL`,
-                  );
-               } catch (error) {
-                  console.error(`[Sweep] Sweep failed for ${address}:`, error);
-               }
-            } else {
-               console.log(`[Sweep] Balance too low to sweep.`);
-            }
-         }
+         console.log(`[Sweep] Sweeping remaining balance back to Master...`);
+         await blockchainUtils.sweepRemainingFunds(tempWallet.privateKey, masterAddress);
       }
    },
-   getNftOwner: async ({}, use) => {
-      const provider = new ethers.providers.JsonRpcProvider(AMOY_RPC_URL);
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
-      await use(async (nftId: string) => {
-         return await contract.ownerOf(nftId);
-      });
+   getNftOwner: async ({ blockchainUtils }, use) => {
+      await use(async (nftId: string) => blockchainUtils.getNftOwner(nftId));
    },
-   getTotalMintedValue: async ({}, use) => {
-      const provider = new ethers.providers.JsonRpcProvider(AMOY_RPC_URL);
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, abi, provider);
-      await use(async () => {
-         const totalMinted = await contract.totalMinted();
-         return totalMinted.toString();
-      });
+   getTotalMintedValue: async ({ blockchainUtils }, use) => {
+      await use(async () => blockchainUtils.getTotalMinted());
    },
 });
 
