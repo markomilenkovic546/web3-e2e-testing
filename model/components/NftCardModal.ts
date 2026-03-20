@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
-import { expect } from '../../tests/fixtures';
+import { expect, test } from '../../tests/fixtures';
 
 export class NftCardModal {
    readonly page: Page;
@@ -9,6 +9,7 @@ export class NftCardModal {
    readonly nftImage: Locator;
    readonly nftGalleryButton: Locator;
    readonly closeModalBtn: Locator;
+   readonly shownNftCountMessage: (quantity: number | string) => Locator;
 
    constructor(page: Page) {
       this.page = page;
@@ -18,6 +19,11 @@ export class NftCardModal {
       this.nftImage = page.locator('figure img.inset-0');
       this.nftGalleryButton = page.locator('[data-cy="btn-gallery-open"]');
       this.closeModalBtn = page.locator('[data-cy="btn-modal-close"]');
+      this.shownNftCountMessage = (quantity) =>
+         this.container.getByText(`1 of ${quantity} freshly minted NFTs shown.`, {
+            exact: true,
+         });
+
    }
 
    // --------------------------------------------------------------------------
@@ -28,18 +34,22 @@ export class NftCardModal {
     * Opens the NFT Gallery by clicking the gallery button.
     */
    async openNFTGallery() {
-      await this.expectNftGalleryButtonIsVisible();
-      await this.nftGalleryButton.click();
-      console.log('NFT Gallery button is clicked');
+      await test.step('Open NFT Gallery', async () => {
+         await this.expectNftGalleryButtonIsVisible();
+         await this.nftGalleryButton.click();
+         console.log('NFT Gallery button is clicked');
+      });
    }
 
    /**
     * Closes the NFT card modal.
     */
    async close() {
-      await this.expectCloseModalBtnIsVisible();
-      await this.closeModalBtn.click();
-      console.log('Close NFT card modal button is clicked');
+      await test.step('Close NFT Card modal', async () => {
+         await this.expectCloseModalBtnIsVisible();
+         await this.closeModalBtn.click();
+         console.log('Close NFT card modal button is clicked');
+      });
    }
 
    // --------------------------------------------------------------------------
@@ -50,7 +60,7 @@ export class NftCardModal {
     * Asserts that the NFT card modal container is visible.
     */
    async expectContainerIsVisible() {
-      await expect(this.container, 'NFT card modal container is missing or not visible').toBeVisible();
+      await expect(this.container, 'Expect NFT card modal container to be visible').toBeVisible();
       console.log('NFT card modal container is visible');
    }
 
@@ -59,7 +69,7 @@ export class NftCardModal {
     * @param {string} nftId - The expected NFT ID.
     */
    async expectNftId(nftId: string) {
-      await expect(this.nftId, 'Incorrect NFT ID is displayed').toHaveText(nftId);
+      await expect(this.nftId, `Expect NFT ID to be "${nftId}"`).toHaveText(nftId);
       console.log('Correct NFT ID is displayed:', await this.nftId.textContent());
    }
 
@@ -68,7 +78,7 @@ export class NftCardModal {
     * @param {string} title - The expected title.
     */
    async expectNftCardTitle(title: string) {
-      await expect(this.nftCardTitle, 'Incorrect NFT card title is displayed').toHaveText(title);
+      await expect(this.nftCardTitle, `Expect NFT card title to be "${title}"`).toHaveText(title);
       console.log('Correct NFT card title is displayed:', await this.nftCardTitle.textContent());
    }
 
@@ -77,7 +87,7 @@ export class NftCardModal {
     * @param {string} alt - The expected alt text.
     */
    async expectNftImageAltText(alt: string) {
-      await expect(this.nftImage, 'Incorrect NFT image alt text is displayed').toHaveAttribute('alt', alt);
+      await expect(this.nftImage, `Expect NFT image alt text to be "${alt}"`).toHaveAttribute('alt', alt);
       console.log('Correct NFT image alt text is displayed');
    }
 
@@ -85,7 +95,7 @@ export class NftCardModal {
     * Asserts that the NFT Gallery button is visible.
     */
    async expectNftGalleryButtonIsVisible() {
-      await expect(this.nftGalleryButton, 'NFT Gallery button is missing or not visible').toBeVisible();
+      await expect(this.nftGalleryButton, 'Expect NFT Gallery button to be visible').toBeVisible();
       console.log('NFT Gallery button is visible');
    }
 
@@ -93,7 +103,16 @@ export class NftCardModal {
     * Asserts that the close modal button is visible.
     */
    async expectCloseModalBtnIsVisible() {
-      await expect(this.closeModalBtn, 'Close modal button is missing or not visible').toBeVisible();
+      await expect(this.closeModalBtn, 'Expect close modal button to be visible').toBeVisible();
       console.log('Close modal button is visible');
+   }
+
+   /**
+    * Asserts that the shown NFT count message is visible.
+    * @param {number | string} quantity - The total number of freshly minted NFTs.
+    */
+   async expectShownNftCountMessageVisible(quantity: number | string) {
+      await expect(this.shownNftCountMessage(quantity), `Expect "1 of ${quantity} freshly minted NFTs shown." message to be visible`).toBeVisible();
+      console.log('Shown NFT message is visible:', `1 of ${quantity} freshly minted NFTs shown." message to be visible`);
    }
 }

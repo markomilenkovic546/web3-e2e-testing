@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
-import { expect } from '../../tests/fixtures';
+import { expect, test } from '../../tests/fixtures';
 
 export class NftGalleryModal {
    readonly page: Page;
@@ -31,15 +31,19 @@ export class NftGalleryModal {
    // --------------------------------------------------------------------------
 
    async close() {
-      await this.expectCloseModalBtnIsVisible();
-      await this.closeModalBtn.click();
-      console.log('Close NFT Gallery modal button is clicked');
+      await test.step('Close NFT Gallery modal', async () => {
+         await this.expectCloseModalBtnIsVisible();
+         await this.closeModalBtn.click();
+         console.log('Close NFT Gallery modal button is clicked');
+      });
    }
 
    async disconnect() {
-      await this.expectDisconnectBtnIsVisible();
-      await this.disconnectBtn.click();
-      console.log('Disconnect button is clicked');
+      await test.step('Disconnect wallet from Gallery', async () => {
+         await this.expectDisconnectBtnIsVisible();
+         await this.disconnectBtn.click();
+         console.log('Disconnect button is clicked');
+      });
    }
 
    getNftItem(nftId: string): Locator {
@@ -47,10 +51,12 @@ export class NftGalleryModal {
    }
 
    async clickOnNft(nftId: string) {
-      const nftItem = this.getNftItem(nftId);
-      await expect(nftItem, `NFT item with ID ${nftId}[nftItem] is missing or not visible`).toBeVisible();
-      await nftItem.click();
-      console.log(`NFT item with ID ${nftId} is clicked`);
+      await test.step(`Click on NFT with ID: ${nftId}`, async () => {
+         const nftItem = this.getNftItem(nftId);
+         await expect(nftItem, `Expect NFT item with ID ${nftId}[nftItem] to be visible`).toBeVisible();
+         await nftItem.click();
+         console.log(`NFT item with ID ${nftId} is clicked`);
+      });
    }
 
    /**
@@ -58,9 +64,11 @@ export class NftGalleryModal {
     * @param {string} nftId - The ID of the NFT.
     */
    async selectNftItem(nftId: string) {
-      await this.expectNftItemButtonIsVisible(nftId);
-      await this.nftItemButton(nftId).click();
-      console.log(`NFT item button for ID ${nftId} is clicked`);
+      await test.step(`Select NFT item: ${nftId}`, async () => {
+         await this.expectNftItemButtonIsVisible(nftId);
+         await this.nftItemButton(nftId).click();
+         console.log(`NFT item button for ID ${nftId} is clicked`);
+      });
    }
 
    // --------------------------------------------------------------------------
@@ -73,7 +81,7 @@ export class NftGalleryModal {
     * Asserts that the NFT Gallery container is visible.
     */
    async expectContainerIsVisible() {
-      await expect(this.container, 'NFT Gallery container[container] is missing or not visible').toBeVisible();
+      await expect(this.container, 'Expect NFT Gallery container[container] to be visible').toBeVisible();
       console.log('NFT Gallery container is visible');
    }
 
@@ -81,7 +89,7 @@ export class NftGalleryModal {
     * Asserts that the NFT Gallery container is not visible.
     */
    async expectContainerIsNotVisible() {
-      await expect(this.container, 'NFT Gallery container[container] should not be visible').toBeHidden();
+      await expect(this.container, 'Expect NFT Gallery container[container] to be hidden').toBeHidden();
       console.log('NFT Gallery container is not visible');
    }
 
@@ -89,7 +97,7 @@ export class NftGalleryModal {
     * Asserts that the close modal button is visible.
     */
    async expectCloseModalBtnIsVisible() {
-      await expect(this.closeModalBtn, 'Close modal button[closeModalBtn] is missing or not visible').toBeVisible();
+      await expect(this.closeModalBtn, 'Expect close modal button[closeModalBtn] to be visible').toBeVisible();
       console.log('Close modal button is visible');
    }
 
@@ -97,7 +105,7 @@ export class NftGalleryModal {
     * Asserts that the disconnect button is visible.
     */
    async expectDisconnectBtnIsVisible() {
-      await expect(this.disconnectBtn, 'Disconnect button[disconnectBtn] is missing or not visible').toBeVisible();
+      await expect(this.disconnectBtn, 'Expect disconnect button[disconnectBtn] to be visible').toBeVisible();
       console.log('Disconnect button is visible');
    }
 
@@ -105,7 +113,7 @@ export class NftGalleryModal {
     * Asserts that the disconnect button is not visible.
     */
    async expectDisconnectBtnIsNotVisible() {
-      await expect(this.disconnectBtn, 'Disconnect button[disconnectBtn] should not be visible').toBeHidden();
+      await expect(this.disconnectBtn, 'Expect disconnect button[disconnectBtn] to be hidden').toBeHidden();
       console.log('Disconnect button is not visible');
    }
 
@@ -115,7 +123,7 @@ export class NftGalleryModal {
     * Asserts that the NFT card is visible.
     */
    async expectNftCardIsVisible() {
-      await expect(this.nftCard, 'NFT card[nftCard] is missing or not visible').toBeVisible();
+      await expect(this.nftCard, 'Expect NFT card[nftCard] to be visible').toBeVisible();
       console.log('NFT card is visible');
    }
 
@@ -123,7 +131,7 @@ export class NftGalleryModal {
     * Asserts that the NFT card is not visible.
     */
    async expectNftCardIsNotVisible() {
-      await expect(this.nftCard, 'NFT card[nftCard] should not be visible').toBeHidden();
+      await expect(this.nftCard, 'Expect NFT card[nftCard] to be hidden').toBeHidden();
       console.log('NFT card is not visible');
    }
 
@@ -132,7 +140,7 @@ export class NftGalleryModal {
     * @param {string} nftId - The ID of the NFT.
     */
    async expectNftItemButtonIsVisible(nftId: string) {
-      await expect(this.nftItemButton(nftId), `NFT item button for ID ${nftId} is missing or not visible`).toBeVisible();
+      await expect(this.nftItemButton(nftId), `Expect NFT item button for ID ${nftId} to be visible`).toBeVisible();
       console.log(`NFT item button for ID ${nftId} is visible`);
    }
 
@@ -141,7 +149,7 @@ export class NftGalleryModal {
     * @param {string} nftId - The expected NFT ID.
     */
    async expectNftId(nftId: string) {
-      await expect(this.nftId, 'Incorrect NFT ID is displayed').toHaveText(nftId);
+      await expect(this.nftId, `Expect NFT ID to be "${nftId}"`).toHaveText(nftId);
       console.log('Correct NFT ID is displayed:', await this.nftId.textContent());
    }
 
@@ -150,7 +158,7 @@ export class NftGalleryModal {
     * @param {string} title - The expected title.
     */
    async expectNftCardTitle(title: string) {
-      await expect(this.nftCardTitle, 'Incorrect NFT card title is displayed').toHaveText(title);
+      await expect(this.nftCardTitle, `Expect NFT card title to be "${title}"`).toHaveText(title);
       console.log('Correct NFT card title is displayed:', await this.nftCardTitle.textContent());
    }
 
@@ -159,7 +167,7 @@ export class NftGalleryModal {
     * @param {string} alt - The expected alt text.
     */
    async expectNftImageAltText(alt: string) {
-      await expect(this.nftImage, 'Incorrect NFT image alt text is displayed').toHaveAttribute('alt', alt);
+      await expect(this.nftImage, `Expect NFT image alt text to be "${alt}"`).toHaveAttribute('alt', alt);
       console.log('Correct NFT image alt text is displayed');
    }
 }

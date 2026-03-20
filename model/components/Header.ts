@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@playwright/test';
-import { expect } from '../../tests/fixtures';
+import { expect, test } from '../../tests/fixtures';
 
 export class Header {
    readonly page: Page;
@@ -19,15 +19,19 @@ export class Header {
    // --------------------------------------------------------------------------
 
    async clickConnect() {
-      await this.expectConnectWalletBtnIsVisible();
-      await this.connectWalletBtn.click();
-      console.log('Connect Wallet button is clicked');
+      await test.step('Click "Connect Wallet" button', async () => {
+         await this.expectConnectWalletBtnIsVisible();
+         await this.connectWalletBtn.click();
+         console.log('Connect Wallet button is clicked');
+      });
    }
 
    async clickAccount() {
-      await this.expectAccountBtnIsVisible();
-      await this.accountBtn.click();
-      console.log('Account button is clicked');
+      await test.step('Click account button', async () => {
+         await this.expectAccountBtnIsVisible();
+         await this.accountBtn.click();
+         console.log('Account button is clicked');
+      });
    }
 
    // --------------------------------------------------------------------------
@@ -40,7 +44,7 @@ export class Header {
     * Asserts that the "Connect Wallet" button is visible.
     */
    async expectConnectWalletBtnIsVisible() {
-      await expect(this.connectWalletBtn, 'Connect Wallet button[connectWalletBtn] is missing or not visible').toBeVisible();
+      await expect(this.connectWalletBtn, 'Expect connect wallet button[connectWalletBtn] to be visible').toBeVisible();
       console.log('Connect Wallet button is visible');
    }
 
@@ -48,7 +52,7 @@ export class Header {
     * Asserts that the "Connect Wallet" button is not visible.
     */
    async expectConnectWalletBtnIsNotVisible() {
-      await expect(this.connectWalletBtn, 'Connect Wallet button[connectWalletBtn] should not be visible').toBeHidden();
+      await expect(this.connectWalletBtn, 'Expect connect wallet button[connectWalletBtn] to be hidden').toBeHidden();
       console.log('Connect Wallet button is not visible');
    }
 
@@ -58,7 +62,7 @@ export class Header {
     * Asserts that the "Account" button is visible.
     */
    async expectAccountBtnIsVisible() {
-      await expect(this.accountBtn, 'Account button[accountBtn] is missing or not visible').toBeVisible();
+      await expect(this.accountBtn, 'Expect account button[accountBtn] to be visible').toBeVisible();
       console.log('Account button is visible');
    }
 
@@ -66,7 +70,7 @@ export class Header {
     * Asserts that the "Account" button is not visible.
     */
    async expectAccountBtnIsNotVisible() {
-      await expect(this.accountBtn, 'Account button[accountBtn] should not be visible').toBeHidden();
+      await expect(this.accountBtn, 'Expect account button[accountBtn] to be hidden').toBeHidden();
       console.log('Account button is not visible');
    }
 
@@ -74,7 +78,7 @@ export class Header {
     * Asserts that the "Account" button is enabled.
     */
    async expectAccountBtnIsEnabled() {
-      await expect(this.accountBtn, 'Account button[accountBtn] should be enabled').toBeEnabled();
+      await expect(this.accountBtn, 'Expect account button[accountBtn] to be enabled').toBeEnabled();
       console.log('Account button is enabled');
    }
 
@@ -82,7 +86,7 @@ export class Header {
     * Asserts that the "Account" button is disabled.
     */
    async expectAccountBtnIsDisabled() {
-      await expect(this.accountBtn, 'Account button[accountBtn] should be disabled').toBeDisabled();
+      await expect(this.accountBtn, 'Expect account button[accountBtn] to be disabled').toBeDisabled();
       console.log('Account button is disabled');
    }
 
@@ -90,7 +94,7 @@ export class Header {
     * Asserts that the number of NFTs figure is visible.
     */
    async expectNumberOfNftsFigureIsVisible() {
-      await expect(this.numberOfNftsBtnFigure, 'Number of NFTs figure[numberOfNftsBtnFigure] is missing or not visible').toBeVisible();
+      await expect(this.numberOfNftsBtnFigure, 'Expect number of NFTs figure[numberOfNftsBtnFigure] to be visible').toBeVisible();
       console.log('Number of NFTs figure is visible');
    }
 
@@ -98,7 +102,7 @@ export class Header {
     * Asserts that the number of NFTs figure is not visible.
     */
    async expectNumberOfNftsFigureIsNotVisible() {
-      await expect(this.numberOfNftsBtnFigure, 'Number of NFTs figure[numberOfNftsBtnFigure] should not be visible').toBeHidden();
+      await expect(this.numberOfNftsBtnFigure, 'Expect number of NFTs figure[numberOfNftsBtnFigure] to be hidden').toBeHidden();
       console.log('Number of NFTs figure is not visible');
    }
 
@@ -108,7 +112,7 @@ export class Header {
     */
    async expectCorrectAddressIsConnected(address: string) {
       const addressPrefix = address.substring(0, 4);
-      await expect(this.accountBtn, `Account button[accountBtn] should contain address prefix ${addressPrefix}`).toContainText(new RegExp(addressPrefix, 'i'));
+      await expect(this.accountBtn, `Expect account button[accountBtn] to contain address prefix "${addressPrefix}"`).toContainText(new RegExp(addressPrefix, 'i'));
       console.log('Account verified successfully!');
    }
 }
