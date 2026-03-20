@@ -5,16 +5,25 @@ import 'dotenv/config';
 // Define Playwright configuration
 export default defineConfig({
   testDir: './tests',
-  fullyParallel: false,
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  retries: 2,
+  workers: 3,
+  reporter: [
+    ['list'],
+    ['monocart-reporter', {  
+        name: "Web3 E2E Tests",
+        outputFile: './test-results/report.html'
+    }]
+  ],
   timeout: 120000,
   use: {
     // Set base URL for tests from environment variable
     baseURL: process.env.BASE_URL || 'http://localhost:3000/',
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    actionTimeout: 30_000,
+    navigationTimeout: 60_000
   },
   projects: [
     {
