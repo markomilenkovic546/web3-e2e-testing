@@ -5,10 +5,11 @@ test.describe('Connection', () => {
       await mintingPage.goto();
    });
 
-   test('User can connect the wallet', async ({
+   test('User connects the wallet successfully', async ({
       mintingPage,
       metamask,
       masterAccount,
+      page,
    }) => {
       const address = await masterAccount();
 
@@ -19,12 +20,19 @@ test.describe('Connection', () => {
       await mintingPage.header.expectAccountBtnIsVisible()
 
       await mintingPage.header.expectCorrectAddressIsConnected(address);
+
+      await mintingPage.header.accountBtn.scrollIntoViewIfNeeded();
+      await test.info().attach('wallet-connected', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
    });
 
-   test('User can disconnect the wallet', async ({
+   test('User disconnects the wallet successfully', async ({
       mintingPage,
       metamask,
       masterAccount,
+      page,
    }) => {
       await masterAccount();
 
@@ -36,17 +44,26 @@ test.describe('Connection', () => {
 
       await mintingPage.header.clickAccount();
 
-      await mintingPage.showcaseModal.disconnect();
+      await mintingPage.nftGalleryModal.disconnect();
+
+      await page.waitForTimeout(5000)
 
       await mintingPage.header.expectConnectWalletBtnIsVisible()
 
       await mintingPage.expectNotConnectedMessage()
+
+      await mintingPage.notConnectedMessage.scrollIntoViewIfNeeded();
+      await test.info().attach('wallet-disconnected', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
    });
 
-   test('dApp behave as expected when a user change the network while wallet is connected', async ({
+   test('dApp behaves as expected when a user changes the network while the wallet is connected', async ({
       mintingPage,
       metamask,
       masterAccount,
+      page,
    }) => {
       const address = await masterAccount();
 
@@ -58,6 +75,11 @@ test.describe('Connection', () => {
       await metamask.switchNetwork('Ethereum Mainnet', false);
 
       await mintingPage.expectWrongNetworkMessage()
+
+      await test.info().attach('wrong-network-message', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
      
       console.log('Clicking Switch Network button on dApp...');
       await mintingPage.switchNetwork()
@@ -68,6 +90,12 @@ test.describe('Connection', () => {
       await mintingPage.header.expectCorrectAddressIsConnected(address)
 
       await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting')
+
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('network-switch-success', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
       console.log('Network switch handled correctly!');
    });

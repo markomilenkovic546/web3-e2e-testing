@@ -9,6 +9,7 @@ test.describe('Balance check', () => {
         mintingPage,
         metamask,
         mintAccount,
+        page,
     }) => {
         const transferValue: string = process.env.SUFFICIENT_FUNDS!;
         await mintAccount(transferValue);
@@ -21,13 +22,18 @@ test.describe('Balance check', () => {
 
         await mintingPage.mintingModal.expectMintBtnIsEnabled();
 
-        console.log('Sufficient funds state verified successfully!');
+        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+        await test.info().attach('sufficient-funds-state', {
+            body: await page.screenshot(),
+            contentType: 'image/png',
+        });
     });
 
     test('User cannot mint if funds are insufficient', async ({
         mintingPage,
         metamask,
         mintAccount,
+        page,
     }) => {
         const transferValue: string = process.env.INSUFFICIENT_FUNDS!;
         await mintAccount(transferValue);
@@ -40,13 +46,18 @@ test.describe('Balance check', () => {
 
         await mintingPage.mintingModal.expectMintBtnIsDisabled();
 
-        console.log('Insufficient funds state verified successfully!');
+        await mintingPage.balanceCheckModal.container.scrollIntoViewIfNeeded();
+        await test.info().attach('insufficient-funds-state', {
+            body: await page.screenshot(),
+            contentType: 'image/png',
+        });
     });
 
     test('User cannot mint after rechecking insufficient balance', async ({
         mintingPage,
         metamask,
         mintAccount,
+        page,
     }) => {
         const transferValue: string = process.env.INSUFFICIENT_FUNDS!;
         await mintAccount(transferValue);
@@ -64,5 +75,11 @@ test.describe('Balance check', () => {
         await mintingPage.balanceCheckModal.expectLowBalanceMessage(transferValue);
         
         await mintingPage.mintingModal.expectMintBtnIsDisabled();
+
+        await mintingPage.balanceCheckModal.container.scrollIntoViewIfNeeded();
+        await test.info().attach('insufficient-funds-after-recheck', {
+            body: await page.screenshot(),
+            contentType: 'image/png',
+        });
     });
 });
