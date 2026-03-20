@@ -41,12 +41,17 @@ export default class BlockchainUtils {
         return await this.contract.ownerOf(nftId);
     }
 
+    async getNftBalance(address: string): Promise<number> {
+        const balance = await this.contract.balanceOf(address);
+        return balance.toNumber();
+    }
+
     async getTotalMinted(): Promise<string> {
         const totalMinted = await this.contract.totalMinted();
         return totalMinted.toString();
     }
 
-    async getMasterAddress(privateKey: string): Promise<string> {
+    async getAddressFromPrivateKey(privateKey: string): Promise<string> {
         const wallet = new ethers.Wallet(privateKey, this.provider);
         return await wallet.getAddress();
     }
