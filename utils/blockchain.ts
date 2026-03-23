@@ -10,28 +10,40 @@ export default class BlockchainUtils {
     private provider: ethers.providers.JsonRpcProvider;
     private contract: ethers.Contract;
 
+    /**
+     * Initializes the provider and the contract instance.
+     */
     constructor() {
         this.provider = new ethers.providers.JsonRpcProvider(AMOY_RPC_URL);
         this.contract = new ethers.Contract(CONTRACT_ADDRESS, abi, this.provider);
     }
 
+    /**
+     * Fetches the native token (POL) balance for a given address.
+     */
     async getBalance(address: string): Promise<ethers.BigNumber> {
         return await this.provider.getBalance(address);
     }
 
     /**
-     * Returns the balance of an address formatted to 4 decimal places.
+     * Returns the balance of an address formatted to 4 decimal places as a string.
      */
     async getFormattedBalance(address: string): Promise<string> {
         const balance = await this.getBalance(address);
         return parseFloat(ethers.utils.formatEther(balance)).toFixed(4);
     }
 
+    /**
+     * Calculates the total gas cost of a transaction using its receipt.
+     */
     async getTransactionCost(txHash: string): Promise<ethers.BigNumber> {
         const receipt = await this.provider.getTransactionReceipt(txHash);
         return receipt.gasUsed.mul(receipt.effectiveGasPrice);
     }
 
+    /**
+     * Searches for the most recent 'TokensClaimed' event for a specific address.
+     */
     async getLatestClaimTransaction(claimerAddress: string): Promise<string | null> {
         const filter = this.contract.filters.TokensClaimed?.(null, claimerAddress);
         if (!filter) return null;
@@ -45,25 +57,40 @@ export default class BlockchainUtils {
         return lastLog.transactionHash;
     }
 
+    /**
+     * Retrieves the owner address of a specific NFT ID.
+     */
     async getNftOwner(nftId: string): Promise<string> {
         return await this.contract.ownerOf(nftId);
     }
 
+    /**
+     * Returns the number of NFTs owned by a specific address.
+     */
     async getNftBalance(address: string): Promise<number> {
         const balance = await this.contract.balanceOf(address);
         return balance.toNumber();
     }
 
+    /**
+     * Retrieves the total number of tokens minted
+     */
     async getTotalMinted(): Promise<string> {
         const totalMinted = await this.contract.totalMinted();
         return totalMinted.toString();
     }
 
+    /**
+     * Derives the public wallet address from a given private key.
+     */
     async getAddressFromPrivateKey(privateKey: string): Promise<string> {
         const wallet = new ethers.Wallet(privateKey, this.provider);
         return await wallet.getAddress();
     }
 
+    /**
+     * Sends a specified amount of POL from a master wallet to a target address.
+     */
     async fundAccount(masterPrivateKey: string, toAddress: string, amountEth: string): Promise<void> {
         const masterWallet = new ethers.Wallet(masterPrivateKey, this.provider);
         console.log(`[Blockchain] Funding ${toAddress} with ${amountEth} POL...`);
@@ -77,6 +104,9 @@ export default class BlockchainUtils {
         console.log(`[Blockchain] Funding transaction confirmed.`);
     }
 
+    /**
+     * Sweeps all remaining funds from a wallet back to a target address, subtracting gas costs.
+     */
     async sweepRemainingFunds(privateKey: string, toAddress: string): Promise<void> {
         const wallet = new ethers.Wallet(privateKey, this.provider);
         const address = await wallet.getAddress();
@@ -106,7 +136,7 @@ export default class BlockchainUtils {
 
     /**
      * Verifies that the balance changed correctly after a minting transaction.
-     * Hides ethers math from the tests.
+     * Factors in NFT price, quantity, and transaction gas costs.
      */
     async expectBalanceAfterMint(
         address: string,
@@ -149,6 +179,9 @@ export default class BlockchainUtils {
         return finalBalance;
     }
 
+    /**
+     * Generates a new random wallet connected to the current provider.
+     */
     createRandomWallet() {
         return ethers.Wallet.createRandom().connect(this.provider);
     }
