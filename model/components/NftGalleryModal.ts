@@ -12,6 +12,7 @@ export class NftGalleryModal {
    readonly nftCardDescription: Locator;
    readonly nftId: Locator;
    readonly nftImage: Locator;
+   readonly walletBalance: Locator;
 
    constructor(page: Page) {
       this.page = page;
@@ -24,6 +25,7 @@ export class NftGalleryModal {
       this.nftCardDescription = page.locator('[data-cy="nft-card"] p');
       this.nftId = page.locator('[data-cy="href-nft"]');
       this.nftImage = page.locator('[data-cy="nft-card"] figure img');
+      this.walletBalance = page.locator('.mr-2.text-sm.font-bold')
    }
 
    // --------------------------------------------------------------------------
@@ -169,5 +171,23 @@ export class NftGalleryModal {
    async expectNftImageAltText(alt: string) {
       await expect(this.nftImage, `Expect NFT image alt text to be "${alt}"`).toHaveAttribute('alt', alt);
       console.log('Correct NFT image alt text is displayed');
+   }
+
+   /**
+    * Asserts that the NFT card description matches the expected value.
+    * @param {string} description - The expected description.
+    */
+   async expectNftCardDescription(description: string) {
+      await expect(this.nftCardDescription, `Expect NFT card description to be "${description}"`).toHaveText(description);
+      console.log('Correct NFT card description is displayed:', await this.nftCardDescription.textContent());
+   }
+
+   /**
+    * Asserts that the wallet balance matches the expected value.
+    * @param {string} balance - The expected balance value (e.g., "4.2151").
+    */
+   async expectCorrectWalletBalance(balance: string) {
+      await expect(this.walletBalance, `Expect wallet balance[walletBalance] to contain text "Balance: ${balance} POL"`).toContainText(`Balance: ${balance} POL`);
+      console.log(`Wallet balance (${balance} POL) verified successfully!`);
    }
 }

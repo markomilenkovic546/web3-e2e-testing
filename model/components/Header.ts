@@ -11,7 +11,7 @@ export class Header {
       this.page = page;
       this.connectWalletBtn = page.getByRole('button', { name: /Connect Wallet/i });
       this.accountBtn = page.locator('[data-cy="btn-account"]');
-      this.numberOfNftsBtnFigure = page.locator('[data-cy="btn-account"] figure span');
+      this.numberOfNftsBtnFigure = page.locator('[data-cy="nft-user-count"]');
    }
 
    // --------------------------------------------------------------------------
@@ -104,6 +104,15 @@ export class Header {
    async expectNumberOfNftsFigureIsNotVisible() {
       await expect(this.numberOfNftsBtnFigure, 'Expect number of NFTs figure[numberOfNftsBtnFigure] to be hidden').toBeHidden();
       console.log('Number of NFTs figure is not visible');
+   }
+
+   /**
+    * Asserts that the correct number of NFTs is displayed on the account button.
+    * @param {number} expectedBalance - The expected number of NFTs.
+    */
+   async expectCorrectNftBalance(expectedBalance: number) {
+      await expect(this.numberOfNftsBtnFigure, `Expect number of NFTs figure[numberOfNftsBtnFigure] to have text "${expectedBalance}"`).toHaveText(expectedBalance.toString());
+      console.log(`Number of NFTs (${expectedBalance}) verified successfully!`);
    }
 
    /**
