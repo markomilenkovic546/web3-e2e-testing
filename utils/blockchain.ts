@@ -19,6 +19,14 @@ export default class BlockchainUtils {
         return await this.provider.getBalance(address);
     }
 
+    /**
+     * Returns the balance of an address formatted to 4 decimal places.
+     */
+    async getFormattedBalance(address: string): Promise<string> {
+        const balance = await this.getBalance(address);
+        return parseFloat(ethers.utils.formatEther(balance)).toFixed(4);
+    }
+
     async getTransactionCost(txHash: string): Promise<ethers.BigNumber> {
         const receipt = await this.provider.getTransactionReceipt(txHash);
         return receipt.gasUsed.mul(receipt.effectiveGasPrice);
