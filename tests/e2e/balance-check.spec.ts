@@ -1,6 +1,6 @@
 import { expect, test } from '../fixtures';
 
-test.describe('Balance check', () => {
+test.describe('Balance check @balance-check', () => {
     test.beforeEach(async ({ mintingPage }) => {
         await mintingPage.goto();
     });

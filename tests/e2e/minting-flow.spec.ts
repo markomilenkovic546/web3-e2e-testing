@@ -1,6 +1,6 @@
 import { expect, test } from '../fixtures';
 
-test.describe('Minting flow', () => {
+test.describe('Minting flow @minting', () => {
     test.beforeEach(async ({ mintingPage }) => {
         await mintingPage.goto();
     });

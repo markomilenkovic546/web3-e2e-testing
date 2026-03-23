@@ -1,6 +1,6 @@
 import { expect, test } from '../fixtures';
 
-test.describe('Connection', () => {
+test.describe('Connection @connection', () => {
    test.beforeEach(async ({ mintingPage }) => {
       await mintingPage.goto();
    });

@@ -1,7 +1,7 @@
 import { test } from '../fixtures';
 import masterCollection from '../../static-data/master-collection.json' with { type: 'json' };
 
-test.describe('Account', () => {
+test.describe('Account @account', () => {
     test.beforeEach(async ({ mintingPage }) => {
         await mintingPage.goto();
     });
