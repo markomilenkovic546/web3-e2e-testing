@@ -7,8 +7,8 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: 2,
-  workers: 3,
+  retries: 1,
+  workers: 4,
   reporter: [
     ['list'],
     ['monocart-reporter', {  
