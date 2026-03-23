@@ -28,10 +28,10 @@ jobs:
         echo "${{ secrets.ENV_FILE }}" > .env
 
     - name: Run Synpress (Create MetaMask Cache)
-      run: npx synpress
+      run: xvfb-run npx synpress
 
     - name: Run Playwright tests
-      run: yarn e2e
+      run: xvfb-run yarn e2e
 
     - name: Upload Test Report
       if: always()
