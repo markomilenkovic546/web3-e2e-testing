@@ -24,7 +24,7 @@ The application under test is **Sitting Cats NFT**, a minting platform developed
 
 The framework uses a granular POM architecture. Instead of monolithic page objects, the UI is broken down into **Reusable Components** (`Header`, `MintingModal`, `NftGalleryModal`, etc.).
 
-- **Managing Complexity:** For detailed pages with many interactive elements, breaking them into smaller components prevents "God Objects" and makes the codebase much cleaner, easier to navigate, and simpler to maintain.
+- **Managing Complexity:** For detailed pages with many interactive elements, breaking them into smaller components makes the codebase much cleaner, easier to navigate, and simpler to maintain.
 - **Code Reuse:** Centralizing logic for shared elements (like Modals or Headers) ensures that changes in the UI only need to be updated in one place, even if the component is used across multiple pages.
 - **Integrated Logging:** Every component-level action is accompanied by descriptive console logs, ensuring the test execution is human-readable.
 
