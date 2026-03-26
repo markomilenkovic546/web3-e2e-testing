@@ -44,7 +44,10 @@ export class Header {
     * Asserts that the "Connect Wallet" button is visible.
     */
    async expectConnectWalletBtnIsVisible() {
-      await expect(this.connectWalletBtn, 'Expect connect wallet button[connectWalletBtn] to be visible').toBeVisible();
+      await expect(
+         this.connectWalletBtn,
+         'Expect connect wallet button[connectWalletBtn] to be visible',
+      ).toBeVisible();
       console.log('Connect Wallet button is visible');
    }
 
@@ -52,7 +55,10 @@ export class Header {
     * Asserts that the "Connect Wallet" button is not visible.
     */
    async expectConnectWalletBtnIsNotVisible() {
-      await expect(this.connectWalletBtn, 'Expect connect wallet button[connectWalletBtn] to be hidden').toBeHidden();
+      await expect(
+         this.connectWalletBtn,
+         'Expect connect wallet button[connectWalletBtn] to be hidden',
+      ).toBeHidden();
       console.log('Connect Wallet button is not visible');
    }
 
@@ -62,7 +68,10 @@ export class Header {
     * Asserts that the "Account" button is visible.
     */
    async expectAccountBtnIsVisible() {
-      await expect(this.accountBtn, 'Expect account button[accountBtn] to be visible').toBeVisible();
+      await expect(
+         this.accountBtn,
+         'Expect account button[accountBtn] to be visible',
+      ).toBeVisible();
       console.log('Account button is visible');
    }
 
@@ -78,7 +87,10 @@ export class Header {
     * Asserts that the "Account" button is enabled.
     */
    async expectAccountBtnIsEnabled() {
-      await expect(this.accountBtn, 'Expect account button[accountBtn] to be enabled').toBeEnabled();
+      await expect(
+         this.accountBtn,
+         'Expect account button[accountBtn] to be enabled',
+      ).toBeEnabled();
       console.log('Account button is enabled');
    }
 
@@ -86,7 +98,10 @@ export class Header {
     * Asserts that the "Account" button is disabled.
     */
    async expectAccountBtnIsDisabled() {
-      await expect(this.accountBtn, 'Expect account button[accountBtn] to be disabled').toBeDisabled();
+      await expect(
+         this.accountBtn,
+         'Expect account button[accountBtn] to be disabled',
+      ).toBeDisabled();
       console.log('Account button is disabled');
    }
 
@@ -94,7 +109,10 @@ export class Header {
     * Asserts that the number of NFTs figure is visible.
     */
    async expectNumberOfNftsFigureIsVisible() {
-      await expect(this.numberOfNftsBtnFigure, 'Expect number of NFTs figure[numberOfNftsBtnFigure] to be visible').toBeVisible();
+      await expect(
+         this.numberOfNftsBtnFigure,
+         'Expect number of NFTs figure[numberOfNftsBtnFigure] to be visible',
+      ).toBeVisible();
       console.log('Number of NFTs figure is visible');
    }
 
@@ -102,7 +120,10 @@ export class Header {
     * Asserts that the number of NFTs figure is not visible.
     */
    async expectNumberOfNftsFigureIsNotVisible() {
-      await expect(this.numberOfNftsBtnFigure, 'Expect number of NFTs figure[numberOfNftsBtnFigure] to be hidden').toBeHidden();
+      await expect(
+         this.numberOfNftsBtnFigure,
+         'Expect number of NFTs figure[numberOfNftsBtnFigure] to be hidden',
+      ).toBeHidden();
       console.log('Number of NFTs figure is not visible');
    }
 
@@ -111,7 +132,10 @@ export class Header {
     * @param {number} expectedBalance - The expected number of NFTs.
     */
    async expectCorrectNftBalance(expectedBalance: number) {
-      await expect(this.numberOfNftsBtnFigure, `Expect number of NFTs figure[numberOfNftsBtnFigure] to have text "${expectedBalance}"`).toHaveText(expectedBalance.toString());
+      await expect(
+         this.numberOfNftsBtnFigure,
+         `Expect number of NFTs figure[numberOfNftsBtnFigure] to have text "${expectedBalance}"`,
+      ).toHaveText(expectedBalance.toString());
       console.log(`Number of NFTs (${expectedBalance}) verified successfully!`);
    }
 
@@ -121,7 +145,10 @@ export class Header {
     */
    async expectCorrectAddressIsConnected(address: string) {
       const addressPrefix = address.substring(0, 4);
-      await expect(this.accountBtn, `Expect account button[accountBtn] to contain address prefix "${addressPrefix}"`).toContainText(new RegExp(addressPrefix, 'i'));
+      await expect(
+         this.accountBtn,
+         `Expect account button[accountBtn] to contain address prefix "${addressPrefix}"`,
+      ).toContainText(new RegExp(addressPrefix, 'i'));
       console.log('Account verified successfully!');
    }
 }

@@ -1,10 +1,10 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect, test } from '../../tests/fixtures';
+import { BalanceCheckModal } from '../components/BalanceCheckModal';
 import { Header } from '../components/Header';
 import { MintingModal } from '../components/MintingModal';
-import { NftGalleryModal } from '../components/NftGalleryModal';
-import { BalanceCheckModal } from '../components/BalanceCheckModal';
 import { NftCardModal } from '../components/NftCardModal';
+import { NftGalleryModal } from '../components/NftGalleryModal';
 
 /**
  * Represents the Minting Page and its components.
@@ -28,10 +28,15 @@ export class MintingPage {
       this.mintingModal = new MintingModal(page);
       this.balanceCheckModal = new BalanceCheckModal(page);
       this.nftCardModal = new NftCardModal(page);
-      this.notConnectedMessage = page.locator('[data-cy="notice-not-connected"]').getByText('Not connected!', { exact: true })
-      this.testNetDisclamer = page.locator('[data-cy="notice-not-connected"]', { hasText: '*Minting on this site uses testnet, so no real money is spent, letting you try NFT minting without financial risk.' })
-      this.wrongNetworkMessage = page.getByText('Wrong network!', { exact: true })
-      this.switchNetworkBtn = page.getByRole('button', { name: /Switch Network/i })
+      this.notConnectedMessage = page
+         .locator('[data-cy="notice-not-connected"]')
+         .getByText('Not connected!', { exact: true });
+      this.testNetDisclamer = page.locator('[data-cy="notice-not-connected"]', {
+         hasText:
+            '*Minting on this site uses testnet, so no real money is spent, letting you try NFT minting without financial risk.',
+      });
+      this.wrongNetworkMessage = page.getByText('Wrong network!', { exact: true });
+      this.switchNetworkBtn = page.getByRole('button', { name: /Switch Network/i });
    }
 
    // --------------------------------------------------------------------------
@@ -54,7 +59,10 @@ export class MintingPage {
       await test.step('Connect wallet', async () => {
          await this.header.clickConnect();
          const metamaskOption = this.page.locator('[data-testid="rk-wallet-option-io.metamask"]');
-         await expect(metamaskOption, 'Expect MetaMask option[metamaskOption] to be visible').toBeVisible();
+         await expect(
+            metamaskOption,
+            'Expect MetaMask option[metamaskOption] to be visible',
+         ).toBeVisible();
          await metamaskOption.click();
          console.log('MetaMask wallet option is clicked');
       });
@@ -81,7 +89,10 @@ export class MintingPage {
     * Asserts that the "Not connected!" message is visible.
     */
    async expectNotConnectedMessage() {
-      await expect(this.notConnectedMessage, 'Expect "Not connected!" message to be visible').toBeVisible({ timeout: 120000 });
+      await expect(
+         this.notConnectedMessage,
+         'Expect "Not connected!" message to be visible',
+      ).toBeVisible({ timeout: 120000 });
       console.log('Not connected message is displayed');
    }
 
@@ -89,7 +100,9 @@ export class MintingPage {
     * Asserts that the testnet disclaimer is visible.
     */
    async expectTestNetDisclamer() {
-      await expect(this.testNetDisclamer, 'Expect testnet disclaimer to be visible').toBeVisible({ timeout: 120000 });
+      await expect(this.testNetDisclamer, 'Expect testnet disclaimer to be visible').toBeVisible({
+         timeout: 120000,
+      });
       console.log('Testnet disclaimer is displayed');
    }
 
@@ -97,7 +110,10 @@ export class MintingPage {
     * Asserts that the "Wrong network!" message is visible.
     */
    async expectWrongNetworkMessage() {
-      await expect(this.wrongNetworkMessage, 'Expect "Wrong network!" message to be visible').toBeVisible({ timeout: 120000 });
+      await expect(
+         this.wrongNetworkMessage,
+         'Expect "Wrong network!" message to be visible',
+      ).toBeVisible({ timeout: 120000 });
       console.log('Wrong network message is displayed');
    }
 
@@ -107,7 +123,10 @@ export class MintingPage {
     * Asserts that the "Switch Network" button is visible.
     */
    async expectSwitchNetworkBtnIsVisible() {
-      await expect(this.switchNetworkBtn, 'Expect "Switch Network" button[switchNetworkBtn] to be visible').toBeVisible();
+      await expect(
+         this.switchNetworkBtn,
+         'Expect "Switch Network" button[switchNetworkBtn] to be visible',
+      ).toBeVisible();
       console.log('Switch Network button is visible');
    }
 
@@ -115,7 +134,10 @@ export class MintingPage {
     * Asserts that the "Switch Network" button is not visible.
     */
    async expectSwitchNetworkBtnIsNotVisible() {
-      await expect(this.switchNetworkBtn, 'Expect "Switch Network" button[switchNetworkBtn] to be hidden').toBeHidden();
+      await expect(
+         this.switchNetworkBtn,
+         'Expect "Switch Network" button[switchNetworkBtn] to be hidden',
+      ).toBeHidden();
       console.log('Switch Network button is not visible');
    }
 
@@ -123,7 +145,10 @@ export class MintingPage {
     * Asserts that the "Switch Network" button is enabled.
     */
    async expectSwitchNetworkBtnIsEnabled() {
-      await expect(this.switchNetworkBtn, 'Expect "Switch Network" button[switchNetworkBtn] to be enabled').toBeEnabled();
+      await expect(
+         this.switchNetworkBtn,
+         'Expect "Switch Network" button[switchNetworkBtn] to be enabled',
+      ).toBeEnabled();
       console.log('Switch Network button is enabled');
    }
 
@@ -131,7 +156,10 @@ export class MintingPage {
     * Asserts that the "Switch Network" button is disabled.
     */
    async expectSwitchNetworkBtnIsDisabled() {
-      await expect(this.switchNetworkBtn, 'Expect "Switch Network" button[switchNetworkBtn] to be disabled').toBeDisabled();
+      await expect(
+         this.switchNetworkBtn,
+         'Expect "Switch Network" button[switchNetworkBtn] to be disabled',
+      ).toBeDisabled();
       console.log('Switch Network button is disabled');
    }
 }

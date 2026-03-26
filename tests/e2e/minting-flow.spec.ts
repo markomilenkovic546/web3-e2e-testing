@@ -1,654 +1,656 @@
 import { expect, test } from '../fixtures';
 
 test.describe('Minting flow @minting', () => {
-    test.beforeEach(async ({ mintingPage }) => {
-        await mintingPage.goto();
-    });
+   test.beforeEach(async ({ mintingPage }) => {
+      await mintingPage.goto();
+   });
 
-    test('Minting modal should show correct default state for wallet with no NFTs', async ({
-        mintingPage,
-        metamask,
-        mintAccount,
-        page
-    }) => {
-        await mintAccount(process.env.TRANSFER_VALUE!);
+   test('Minting modal should show correct default state for wallet with no NFTs', async ({
+      mintingPage,
+      metamask,
+      mintAccount,
+      page,
+   }) => {
+      await mintAccount(process.env.TRANSFER_VALUE!);
 
-        await mintingPage.connectWallet();
+      await mintingPage.connectWallet();
 
-        await metamask.connectToDapp();
+      await metamask.connectToDapp();
 
-        await mintingPage.mintingModal.expectContainerIsVisible();
+      await mintingPage.mintingModal.expectContainerIsVisible();
 
-        await mintingPage.mintingModal.expectIncreaseQuantityBtnIsEnabled();
+      await mintingPage.mintingModal.expectIncreaseQuantityBtnIsEnabled();
 
-        await mintingPage.mintingModal.expectDecreaseQuantityBtnIsDisabled();
+      await mintingPage.mintingModal.expectDecreaseQuantityBtnIsDisabled();
 
-        await mintingPage.mintingModal.expectMintBtnIsEnabled();
+      await mintingPage.mintingModal.expectMintBtnIsEnabled();
 
-        await mintingPage.mintingModal.expectCorrectNFTQuantity('1')
+      await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
 
-        await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting')
+      await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
 
-        await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE!))
+      await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE!));
 
-        await mintingPage.mintingModal.expectCorrectBalancePerPhase(0)
+      await mintingPage.mintingModal.expectCorrectBalancePerPhase(0);
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
 
-        await test.info().attach('minting-modal-state', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
-    });
+      await test.info().attach('minting-modal-state', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
+   });
 
-    test('Minting modal should show correct default state for wallet with multiple NFTs', async ({
-        mintingPage,
-        metamask,
-        masterAccount,
-        page
-    }) => {
-        await masterAccount();
+   test('Minting modal should show correct default state for wallet with multiple NFTs', async ({
+      mintingPage,
+      metamask,
+      masterAccount,
+      page,
+   }) => {
+      await masterAccount();
 
-        await mintingPage.connectWallet();
+      await mintingPage.connectWallet();
 
-        await metamask.connectToDapp();
+      await metamask.connectToDapp();
 
-        await mintingPage.mintingModal.expectContainerIsVisible();
+      await mintingPage.mintingModal.expectContainerIsVisible();
 
-        await mintingPage.mintingModal.expectIncreaseQuantityBtnIsEnabled();
+      await mintingPage.mintingModal.expectIncreaseQuantityBtnIsEnabled();
 
-        await mintingPage.mintingModal.expectDecreaseQuantityBtnIsDisabled();
+      await mintingPage.mintingModal.expectDecreaseQuantityBtnIsDisabled();
 
-        await mintingPage.mintingModal.expectMintBtnIsEnabled();
+      await mintingPage.mintingModal.expectMintBtnIsEnabled();
 
-        await mintingPage.mintingModal.expectCorrectNFTQuantity('1')
+      await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
 
-        await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting')
+      await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
 
-        await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE!))
+      await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE!));
 
-        await mintingPage.mintingModal.expectCorrectBalancePerPhase(Number(process.env.MASTER_MINTED_COUNT!))
+      await mintingPage.mintingModal.expectCorrectBalancePerPhase(
+         Number(process.env.MASTER_MINTED_COUNT!),
+      );
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
 
-        await test.info().attach('minting-modal-state', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
-    });
+      await test.info().attach('minting-modal-state', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
+   });
 
-    test('Minting modal should show correct default state for wallet with reached max number of NFTs and prevents user to mint', async ({
-        mintingPage,
-        metamask,
-        maxMintedAccount,
-        page,
-    }) => {
-        await maxMintedAccount();
+   test('Minting modal should show correct default state for wallet with reached max number of NFTs and prevents user to mint', async ({
+      mintingPage,
+      metamask,
+      maxMintedAccount,
+      page,
+   }) => {
+      await maxMintedAccount();
 
-        await mintingPage.connectWallet();
+      await mintingPage.connectWallet();
 
-        await metamask.connectToDapp();
+      await metamask.connectToDapp();
 
-        await mintingPage.mintingModal.expectContainerIsVisible();
+      await mintingPage.mintingModal.expectContainerIsVisible();
 
-        await mintingPage.mintingModal.expectIncreaseQuantityBtnIsDisabled()
+      await mintingPage.mintingModal.expectIncreaseQuantityBtnIsDisabled();
 
-        await mintingPage.mintingModal.expectDecreaseQuantityBtnIsDisabled();
+      await mintingPage.mintingModal.expectDecreaseQuantityBtnIsDisabled();
 
-        await mintingPage.mintingModal.expectInputQuantityIsDisabled()
+      await mintingPage.mintingModal.expectInputQuantityIsDisabled();
 
-        await mintingPage.mintingModal.expectMintBtnIsDisabled()
+      await mintingPage.mintingModal.expectMintBtnIsDisabled();
 
-        await mintingPage.mintingModal.expectCorrectNFTQuantity('1')
+      await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(`You've reached your limit for minting NFTs.`)
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         `You've reached your limit for minting NFTs.`,
+      );
 
-        await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE!))
+      await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE!));
 
-        await mintingPage.mintingModal.expectCorrectBalancePerPhase(Number(process.env.MAX_NFTS_PER_PHASE!))
+      await mintingPage.mintingModal.expectCorrectBalancePerPhase(
+         Number(process.env.MAX_NFTS_PER_PHASE!),
+      );
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
 
-        await test.info().attach('minting-modal-state', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
-    });
-    test('User should be able to complete NFT mint flow', async ({
-        mintingPage,
-        metamask,
-        mintAccount,
-        getNftOwner,
-        blockchainUtils,
-        page,
-    }) => {
-        const address = await mintAccount(process.env.TRANSFER_VALUE!);
+      await test.info().attach('minting-modal-state', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
+   });
+   test('User should be able to complete NFT mint flow', async ({
+      mintingPage,
+      metamask,
+      mintAccount,
+      getNftOwner,
+      blockchainUtils,
+      page,
+   }) => {
+      const address = await mintAccount(process.env.TRANSFER_VALUE!);
 
-        await mintingPage.connectWallet();
+      await mintingPage.connectWallet();
 
-        await metamask.connectToDapp();
+      await metamask.connectToDapp();
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
+      await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
 
-        const initialBalance = await blockchainUtils.getBalance(address);
+      const initialBalance = await blockchainUtils.getBalance(address);
 
-        await mintingPage.mintingModal.mint();
+      await mintingPage.mintingModal.mint();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'Please confirm transaction in your wallet to continue.',
-        );
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'Please confirm transaction in your wallet to continue.',
+      );
 
-        await page.waitForTimeout(3000);
+      await page.waitForTimeout(3000);
 
-        await test.info().attach('Please confirm tx...', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await test.info().attach('Please confirm tx...', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await metamask.confirmTransaction();
+      await metamask.confirmTransaction();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage('Waiting for the receipt');
+      await mintingPage.mintingModal.expectMintingInfoMessage('Waiting for the receipt');
 
-        await test.info().attach('Waiting for the receipt', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await test.info().attach('Waiting for the receipt', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'NFT successfully claimed. You can continue minting.',
-        );
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'NFT successfully claimed. You can continue minting.',
+      );
 
-        await test.info().attach('NFT successfully claimed', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await test.info().attach('NFT successfully claimed', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        // Verify balance change
-        await blockchainUtils.expectBalanceAfterMint(address, initialBalance, process.env.NFT_PRICE!);
+      // Verify balance change
+      await blockchainUtils.expectBalanceAfterMint(address, initialBalance, process.env.NFT_PRICE!);
 
-        await mintingPage.mintingModal.expectCorrectBalancePerPhase(1)
+      await mintingPage.mintingModal.expectCorrectBalancePerPhase(1);
 
-        await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE))
+      await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE));
 
-        await mintingPage.mintingModal.expectCorrectNFTQuantity('1')
+      await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
 
-        await test.info().attach('Minting modal details after succesfull minting', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await test.info().attach('Minting modal details after succesfull minting', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        // Get NFT details from the UI
-        const nftId = await mintingPage.mintingModal.getClaimedNftId();
-        const altText = await mintingPage.mintingModal.getClaimedNftAltText();
-        const nftName = altText.split(' ')[0];
+      // Get NFT details from the UI
+      const nftId = await mintingPage.mintingModal.getClaimedNftId();
+      const altText = await mintingPage.mintingModal.getClaimedNftAltText();
+      const nftName = altText.split(' ')[0];
 
-        // Open the NFT Card modal (NftCardModal)
-        await mintingPage.mintingModal.clickOnClaimedNft();
+      // Open the NFT Card modal (NftCardModal)
+      await mintingPage.mintingModal.clickOnClaimedNft();
 
-        // Verify that correct info is displayed in the NftCardModal
-        await mintingPage.nftCardModal.expectContainerIsVisible();
-        await mintingPage.nftCardModal.expectNftId(nftId);
-        await mintingPage.nftCardModal.expectNftCardTitle(nftName!);
-        await mintingPage.nftCardModal.expectNftImageAltText(altText);
+      // Verify that correct info is displayed in the NftCardModal
+      await mintingPage.nftCardModal.expectContainerIsVisible();
+      await mintingPage.nftCardModal.expectNftId(nftId);
+      await mintingPage.nftCardModal.expectNftCardTitle(nftName!);
+      await mintingPage.nftCardModal.expectNftImageAltText(altText);
 
-        await test.info().attach('NFT card modal', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await test.info().attach('NFT card modal', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        // Open the NFT Gallery
-        await mintingPage.nftCardModal.openNFTGallery();
+      // Open the NFT Gallery
+      await mintingPage.nftCardModal.openNFTGallery();
 
-        // Verify NFT Gallery
-        await metamask.page.waitForTimeout(2000);
-        await mintingPage.nftGalleryModal.expectContainerIsVisible();
-        await mintingPage.nftGalleryModal.expectNftItemButtonIsVisible(nftId);
+      // Verify NFT Gallery
+      await metamask.page.waitForTimeout(2000);
+      await mintingPage.nftGalleryModal.expectContainerIsVisible();
+      await mintingPage.nftGalleryModal.expectNftItemButtonIsVisible(nftId);
 
-        // Verify that correct info is displayed in the NFT card inside gallery
-        await mintingPage.nftGalleryModal.expectNftCardIsVisible();
-        await mintingPage.nftGalleryModal.expectNftId(nftId);
-        await mintingPage.nftGalleryModal.expectNftCardTitle(nftName!);
-        await mintingPage.nftGalleryModal.expectNftImageAltText(altText);
+      // Verify that correct info is displayed in the NFT card inside gallery
+      await mintingPage.nftGalleryModal.expectNftCardIsVisible();
+      await mintingPage.nftGalleryModal.expectNftId(nftId);
+      await mintingPage.nftGalleryModal.expectNftCardTitle(nftName!);
+      await mintingPage.nftGalleryModal.expectNftImageAltText(altText);
 
-        await test.info().attach('NFT gallery', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
-        // Verify ownership on the smart contract
+      await test.info().attach('NFT gallery', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
+      // Verify ownership on the smart contract
 
-        const nftOwner = await getNftOwner(nftId);
-        expect(nftOwner.toLowerCase()).toEqual(address.toLowerCase());
-        console.log('[Blockchain] NFT owner:', nftOwner)
-    });
+      const nftOwner = await getNftOwner(nftId);
+      expect(nftOwner.toLowerCase()).toEqual(address.toLowerCase());
+      console.log('[Blockchain] NFT owner:', nftOwner);
+   });
 
-    test('User should be able to mint NFTs sequentially', async ({
-        mintingPage,
-        metamask,
-        mintAccount,
-        getNftOwner,
-        blockchainUtils,
-        page,
-    }) => {
-        const address = await mintAccount(process.env.TRANSFER_VALUE!);
+   test('User should be able to mint NFTs sequentially', async ({
+      mintingPage,
+      metamask,
+      mintAccount,
+      getNftOwner,
+      blockchainUtils,
+      page,
+   }) => {
+      const address = await mintAccount(process.env.TRANSFER_VALUE!);
 
-        await mintingPage.connectWallet();
+      await mintingPage.connectWallet();
 
-        await metamask.connectToDapp();
+      await metamask.connectToDapp();
 
-        let currentBalance = await blockchainUtils.getBalance(address);
+      let currentBalance = await blockchainUtils.getBalance(address);
 
-        // --- Mint First NFT ---
-        await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
+      // --- Mint First NFT ---
+      await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
 
-        await mintingPage.mintingModal.mint();
+      await mintingPage.mintingModal.mint();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'Please confirm transaction in your wallet to continue.',
-        );
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'Please confirm transaction in your wallet to continue.',
+      );
 
-        await page.waitForTimeout(3000);
+      await page.waitForTimeout(3000);
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('Please confirm tx (1st mint)', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('Please confirm tx (1st mint)', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await metamask.confirmTransaction();
+      await metamask.confirmTransaction();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'NFT successfully claimed. You can continue minting.',
-        );
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'NFT successfully claimed. You can continue minting.',
+      );
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('NFT successfully claimed (1st mint)', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('NFT successfully claimed (1st mint)', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        // Verify balance change for first mint
-        currentBalance = await blockchainUtils.expectBalanceAfterMint(address, currentBalance, process.env.NFT_PRICE!);
+      // Verify balance change for first mint
+      currentBalance = await blockchainUtils.expectBalanceAfterMint(
+         address,
+         currentBalance,
+         process.env.NFT_PRICE!,
+      );
 
-        await mintingPage.mintingModal.expectCorrectBalancePerPhase(1)
+      await mintingPage.mintingModal.expectCorrectBalancePerPhase(1);
 
-        await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE))
+      await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE));
 
-        await mintingPage.mintingModal.expectCorrectNFTQuantity('1')
+      await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
 
-        const firstNftId = await mintingPage.mintingModal.getClaimedNftId();
-        const firstNftAltText = await mintingPage.mintingModal.getClaimedNftAltText();
-        const firstNftName = firstNftAltText.split(' ')[0];
+      const firstNftId = await mintingPage.mintingModal.getClaimedNftId();
+      const firstNftAltText = await mintingPage.mintingModal.getClaimedNftAltText();
+      const firstNftName = firstNftAltText.split(' ')[0];
 
-        await mintingPage.mintingModal.clickOnClaimedNft();
+      await mintingPage.mintingModal.clickOnClaimedNft();
 
-        await mintingPage.nftCardModal.expectContainerIsVisible();
-        await mintingPage.nftCardModal.expectNftId(firstNftId);
-        await mintingPage.nftCardModal.expectNftCardTitle(firstNftName!);
-        await mintingPage.nftCardModal.expectNftImageAltText(firstNftAltText);
+      await mintingPage.nftCardModal.expectContainerIsVisible();
+      await mintingPage.nftCardModal.expectNftId(firstNftId);
+      await mintingPage.nftCardModal.expectNftCardTitle(firstNftName!);
+      await mintingPage.nftCardModal.expectNftImageAltText(firstNftAltText);
 
-        await mintingPage.nftCardModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('NFT card modal (1st mint)', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await mintingPage.nftCardModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('NFT card modal (1st mint)', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await mintingPage.nftCardModal.close();
+      await mintingPage.nftCardModal.close();
 
-        const firstNftOwner = await getNftOwner(firstNftId);
-        expect(firstNftOwner.toLowerCase()).toEqual(address.toLowerCase());
-        console.log('[Blockchain] First NFT owner:', firstNftOwner)
+      const firstNftOwner = await getNftOwner(firstNftId);
+      expect(firstNftOwner.toLowerCase()).toEqual(address.toLowerCase());
+      console.log('[Blockchain] First NFT owner:', firstNftOwner);
 
-        // --- Mint Second NFT ---
-        await mintingPage.mintingModal.expectMintingInfoMessage('NFT successfully claimed. You can continue minting.');
+      // --- Mint Second NFT ---
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'NFT successfully claimed. You can continue minting.',
+      );
 
-        await mintingPage.mintingModal.mint();
+      await mintingPage.mintingModal.mint();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'Please confirm transaction in your wallet to continue.',
-        );
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'Please confirm transaction in your wallet to continue.',
+      );
 
-        await page.waitForTimeout(3000);
+      await page.waitForTimeout(3000);
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('Please confirm tx (2nd mint)', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('Please confirm tx (2nd mint)', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await metamask.confirmTransaction();
+      await metamask.confirmTransaction();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'NFT successfully claimed. You can continue minting.',
-        );
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'NFT successfully claimed. You can continue minting.',
+      );
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('NFT successfully claimed (2nd mint)', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('NFT successfully claimed (2nd mint)', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        // Verify balance change for second mint
-        await blockchainUtils.expectBalanceAfterMint(address, currentBalance, process.env.NFT_PRICE!);
+      // Verify balance change for second mint
+      await blockchainUtils.expectBalanceAfterMint(address, currentBalance, process.env.NFT_PRICE!);
 
-        await mintingPage.mintingModal.expectCorrectBalancePerPhase(2)
+      await mintingPage.mintingModal.expectCorrectBalancePerPhase(2);
 
-        await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE))
+      await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(process.env.NFT_PRICE));
 
-        await mintingPage.mintingModal.expectCorrectNFTQuantity('1')
+      await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
 
-        const secondNftId = await mintingPage.mintingModal.getClaimedNftId();
-        const secondNftAltText = await mintingPage.mintingModal.getClaimedNftAltText();
-        const secondNftName = secondNftAltText.split(' ')[0];
+      const secondNftId = await mintingPage.mintingModal.getClaimedNftId();
+      const secondNftAltText = await mintingPage.mintingModal.getClaimedNftAltText();
+      const secondNftName = secondNftAltText.split(' ')[0];
 
-        await mintingPage.mintingModal.clickOnClaimedNft();
+      await mintingPage.mintingModal.clickOnClaimedNft();
 
-        await mintingPage.nftCardModal.expectContainerIsVisible();
-        await mintingPage.nftCardModal.expectNftId(secondNftId);
-        await mintingPage.nftCardModal.expectNftCardTitle(secondNftName!);
-        await mintingPage.nftCardModal.expectNftImageAltText(secondNftAltText);
+      await mintingPage.nftCardModal.expectContainerIsVisible();
+      await mintingPage.nftCardModal.expectNftId(secondNftId);
+      await mintingPage.nftCardModal.expectNftCardTitle(secondNftName!);
+      await mintingPage.nftCardModal.expectNftImageAltText(secondNftAltText);
 
-        await mintingPage.nftCardModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('NFT card modal (2nd mint)', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await mintingPage.nftCardModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('NFT card modal (2nd mint)', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        const secondNftOwner = await getNftOwner(secondNftId);
-        expect(secondNftOwner.toLowerCase()).toEqual(address.toLowerCase());
-        console.log('[Blockchain] Second NFT owner:', secondNftOwner)
+      const secondNftOwner = await getNftOwner(secondNftId);
+      expect(secondNftOwner.toLowerCase()).toEqual(address.toLowerCase());
+      console.log('[Blockchain] Second NFT owner:', secondNftOwner);
+   });
 
+   test('User should be able to retry minting after rejecting transaction', async ({
+      mintingPage,
+      metamask,
+      mintAccount,
+      getNftBalance,
+      blockchainUtils,
+      page,
+   }) => {
+      const address = await mintAccount(process.env.TRANSFER_VALUE!);
 
-    });
+      await mintingPage.connectWallet();
 
+      await metamask.connectToDapp();
 
-    test('User should be able to retry minting after rejecting transaction', async ({
-        mintingPage,
-        metamask,
-        mintAccount,
-        getNftBalance,
-        blockchainUtils,
-        page,
-    }) => {
-        const address = await mintAccount(process.env.TRANSFER_VALUE!);
+      await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
 
-        await mintingPage.connectWallet();
+      const initialBalance = await blockchainUtils.getBalance(address);
+      const nftPrice = process.env.NFT_PRICE!;
 
-        await metamask.connectToDapp();
+      // --- First Attempt: Reject ---
+      await mintingPage.mintingModal.mint();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'Please confirm transaction in your wallet to continue.',
+      );
 
-        const initialBalance = await blockchainUtils.getBalance(address);
-        const nftPrice = process.env.NFT_PRICE!;
+      await page.waitForTimeout(3000);
 
-        // --- First Attempt: Reject ---
-        await mintingPage.mintingModal.mint();
+      console.log('Rejecting transaction in MetaMask...');
+      await metamask.rejectTransaction();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'Please confirm transaction in your wallet to continue.',
-        );
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         "You've canceled the transaction. Try again?",
+      );
 
-        await page.waitForTimeout(3000);
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('rejected-tx', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        console.log('Rejecting transaction in MetaMask...');
-        await metamask.rejectTransaction();
+      // --- Second Attempt: Confirm ---
+      await mintingPage.mintingModal.mint();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            "You've canceled the transaction. Try again?",
-        );
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'Please confirm transaction in your wallet to continue.',
+      );
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('rejected-tx', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await page.waitForTimeout(3000);
 
-        // --- Second Attempt: Confirm ---
-        await mintingPage.mintingModal.mint();
+      await metamask.confirmTransaction();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'Please confirm transaction in your wallet to continue.',
-        );
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'NFT successfully claimed. You can continue minting.',
+      );
 
-        await page.waitForTimeout(3000);
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('confirmed-after-rejection', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await metamask.confirmTransaction();
+      // Verify balance change (only 1 NFT should be minted)
+      await blockchainUtils.expectBalanceAfterMint(address, initialBalance, nftPrice);
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'NFT successfully claimed. You can continue minting.',
-        );
+      await mintingPage.mintingModal.expectCorrectBalancePerPhase(1);
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('confirmed-after-rejection', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(nftPrice));
 
-        // Verify balance change (only 1 NFT should be minted)
-        await blockchainUtils.expectBalanceAfterMint(address, initialBalance, nftPrice);
+      await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
 
-        await mintingPage.mintingModal.expectCorrectBalancePerPhase(1);
+      // Verify NFT ownership/balance on the smart contract
+      const nftBalance = await getNftBalance(address);
+      expect(nftBalance).toEqual(1);
+      console.log('[Blockchain] Account NFT balance is correct:', 1);
+   });
 
-        await mintingPage.mintingModal.expectCorrectTotalPrice(1, Number(nftPrice));
+   test('User should be able to mint multiple NFTs at once', async ({
+      mintingPage,
+      metamask,
+      mintAccount,
+      blockchainUtils,
+      page,
+      getNftBalance,
+   }) => {
+      const address = await mintAccount(process.env.TRANSFER_VALUE!);
 
-        await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
+      await mintingPage.connectWallet();
 
-        // Verify NFT ownership/balance on the smart contract
-        const nftBalance = await getNftBalance(address);
-        expect(nftBalance).toEqual(1);
-        console.log('[Blockchain] Account NFT balance is correct:', 1)
-    });
+      await metamask.connectToDapp();
 
+      await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
 
-    test('User should be able to mint multiple NFTs at once', async ({
-        mintingPage,
-        metamask,
-        mintAccount,
-        blockchainUtils,
-        page,
-        getNftBalance
-    }) => {
-        const address = await mintAccount(process.env.TRANSFER_VALUE!);
+      const initialBalance = await blockchainUtils.getBalance(address);
+      const nftPrice = Number(process.env.NFT_PRICE!);
+      const quantityToMint = 3;
 
-        await mintingPage.connectWallet();
+      await mintingPage.mintingModal.enterQuantity(quantityToMint.toString());
+      await mintingPage.mintingModal.expectCorrectTotalPrice(quantityToMint, nftPrice);
 
-        await metamask.connectToDapp();
+      await mintingPage.mintingModal.mint();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'Please confirm transaction in your wallet to continue.',
+      );
 
-        const initialBalance = await blockchainUtils.getBalance(address);
-        const nftPrice = Number(process.env.NFT_PRICE!);
-        const quantityToMint = 3;
+      await page.waitForTimeout(3000);
 
-        await mintingPage.mintingModal.enterQuantity(quantityToMint.toString());
-        await mintingPage.mintingModal.expectCorrectTotalPrice(quantityToMint, nftPrice);
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('Please confirm tx (3 NFTs)', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await mintingPage.mintingModal.mint();
+      await metamask.confirmTransaction();
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'Please confirm transaction in your wallet to continue.',
-        );
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'NFTs successfully claimed. You can continue minting.',
+      );
 
-        await page.waitForTimeout(3000);
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('NFTs successfully claimed (3 NFTs)', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('Please confirm tx (3 NFTs)', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      // Verify balance change
+      const totalCost = (nftPrice * quantityToMint).toString();
+      await blockchainUtils.expectBalanceAfterMint(address, initialBalance, totalCost);
 
-        await metamask.confirmTransaction();
+      await mintingPage.mintingModal.expectCorrectBalancePerPhase(quantityToMint);
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'NFTs successfully claimed. You can continue minting.',
-        );
+      await mintingPage.mintingModal.expectCorrectTotalPrice(1, nftPrice);
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('NFTs successfully claimed (3 NFTs)', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
 
-        // Verify balance change
-        const totalCost = (nftPrice * quantityToMint).toString();
-        await blockchainUtils.expectBalanceAfterMint(address, initialBalance, totalCost);
+      await test.info().attach('Minting modal details after succesfull multiple minting', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await mintingPage.mintingModal.expectCorrectBalancePerPhase(quantityToMint)
+      await mintingPage.mintingModal.clickOnClaimedNft();
 
-        await mintingPage.mintingModal.expectCorrectTotalPrice(1, nftPrice)
+      // Verify the message about multiple NFTs shown
+      await mintingPage.nftCardModal.expectShownNftCountMessageVisible(quantityToMint);
 
-        await mintingPage.mintingModal.expectCorrectNFTQuantity('1')
+      // Verify NFT ownership/balance on the smart contract
+      const nftBalance = await getNftBalance(address);
+      expect(nftBalance).toEqual(quantityToMint);
+      console.log('[Blockchain] Account NFT balance is correct:', nftBalance);
+   });
 
-        await test.info().attach('Minting modal details after succesfull multiple minting', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+   test('User should not be able to set NFT quantity lower than 1', async ({
+      mintingPage,
+      metamask,
+      masterAccount,
+      page,
+   }) => {
+      await masterAccount();
 
-        await mintingPage.mintingModal.clickOnClaimedNft()
+      await mintingPage.connectWallet();
 
-        // Verify the message about multiple NFTs shown
-        await mintingPage.nftCardModal.expectShownNftCountMessageVisible(quantityToMint);
+      await metamask.connectToDapp();
 
-        // Verify NFT ownership/balance on the smart contract
-        const nftBalance = await getNftBalance(address);
-        expect(nftBalance).toEqual(quantityToMint);
-        console.log('[Blockchain] Account NFT balance is correct:', nftBalance)
-    });
+      await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
 
+      await mintingPage.mintingModal.expectDecreaseQuantityBtnIsDisabled();
 
-    test('User should not be able to set NFT quantity lower than 1', async ({
-        mintingPage,
-        metamask,
-        masterAccount,
-        page,
-    }) => {
-        await masterAccount();
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('quantity-lower-than-1-disabled', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
+   });
 
-        await mintingPage.connectWallet();
+   test('User should not be able to increment NFT quantity beyond max per phase', async ({
+      mintingPage,
+      metamask,
+      mintAccount,
+      page,
+   }) => {
+      await mintAccount(process.env.TRANSFER_VALUE!);
 
-        await metamask.connectToDapp();
+      await mintingPage.connectWallet();
 
-        await mintingPage.mintingModal.expectCorrectNFTQuantity('1');
+      await metamask.connectToDapp();
 
-        await mintingPage.mintingModal.expectDecreaseQuantityBtnIsDisabled();
+      await mintingPage.mintingModal.enterQuantity(process.env.MAX_NFTS_PER_PHASE!);
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('quantity-lower-than-1-disabled', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
-    });
+      await mintingPage.mintingModal.expectIncreaseQuantityBtnIsDisabled();
 
-    test('User should not be able to increment NFT quantity beyond max per phase', async ({
-        mintingPage,
-        metamask,
-        mintAccount,
-        page,
-    }) => {
-        await mintAccount(process.env.TRANSFER_VALUE!);
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('max-quantity-limit', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
+   });
+   test('User should see max NFT quantity adjust correctly after a successful mint', async ({
+      mintingPage,
+      page,
+      metamask,
+      mintAccount,
+   }) => {
+      await mintAccount(process.env.TRANSFER_VALUE!);
 
-        await mintingPage.connectWallet();
+      await mintingPage.connectWallet();
 
-        await metamask.connectToDapp();
+      await metamask.connectToDapp();
 
-        await mintingPage.mintingModal.enterQuantity(process.env.MAX_NFTS_PER_PHASE!);
+      await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
 
-        await mintingPage.mintingModal.expectIncreaseQuantityBtnIsDisabled();
+      await mintingPage.mintingModal.mint();
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('max-quantity-limit', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
-    });
-    test('User should see max NFT quantity adjust correctly after a successful mint', async ({
-        mintingPage,
-        page,
-        metamask,
-        mintAccount,
-    }) => {
-        await mintAccount(process.env.TRANSFER_VALUE!);
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'Please confirm transaction in your wallet to continue.',
+      );
 
-        await mintingPage.connectWallet();
+      await page.waitForTimeout(3000);
 
-        await metamask.connectToDapp();
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('Please confirm tx', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
+      await metamask.confirmTransaction();
 
-        await mintingPage.mintingModal.mint();
+      await mintingPage.mintingModal.expectMintingInfoMessage(
+         'NFT successfully claimed. You can continue minting.',
+      );
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'Please confirm transaction in your wallet to continue.',
-        );
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('NFT successfully claimed', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
 
-        await page.waitForTimeout(3000);
+      await mintingPage.mintingModal.expectCorrectBalancePerPhase(1);
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('Please confirm tx', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      const remainingAllowed = Number(process.env.MAX_NFTS_PER_PHASE!) - 1;
+      await mintingPage.mintingModal.enterQuantity(remainingAllowed.toString());
 
-        await metamask.confirmTransaction();
+      await mintingPage.mintingModal.expectIncreaseQuantityBtnIsDisabled();
 
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('max-quantity-adjusted', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
+   });
 
-        await mintingPage.mintingModal.expectMintingInfoMessage(
-            'NFT successfully claimed. You can continue minting.',
-        );
+   test('NFT total price should update correctly according to quantity', async ({
+      mintingPage,
+      metamask,
+      mintAccount,
+      page,
+   }) => {
+      await mintAccount(process.env.TRANSFER_VALUE!);
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('NFT successfully claimed', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
+      await mintingPage.connectWallet();
 
-        await mintingPage.mintingModal.expectCorrectBalancePerPhase(1);
+      await metamask.connectToDapp();
 
-        const remainingAllowed = Number(process.env.MAX_NFTS_PER_PHASE!) - 1;
-        await mintingPage.mintingModal.enterQuantity(remainingAllowed.toString());
+      await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
 
-        await mintingPage.mintingModal.expectIncreaseQuantityBtnIsDisabled();
+      const nftPrice = Number(process.env.NFT_PRICE!);
+      const nftClaimLimit = Number(process.env.MAX_NFTS_PER_PHASE!);
 
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('max-quantity-adjusted', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
-    });
+      await mintingPage.mintingModal.expectCorrectTotalPrice(1, nftPrice);
 
+      for (let i = 2; i <= nftClaimLimit; i++) {
+         await mintingPage.mintingModal.increaseQuantity();
+         await mintingPage.mintingModal.expectCorrectTotalPrice(i, nftPrice);
+      }
 
-
-    test('NFT total price should update correctly according to quantity', async ({
-        mintingPage,
-        metamask,
-        mintAccount,
-        page,
-    }) => {
-        await mintAccount(process.env.TRANSFER_VALUE!);
-
-        await mintingPage.connectWallet();
-
-        await metamask.connectToDapp();
-
-        await mintingPage.mintingModal.expectMintingInfoMessage('Ready for minting');
-
-        const nftPrice = Number(process.env.NFT_PRICE!);
-        const nftClaimLimit = Number(process.env.MAX_NFTS_PER_PHASE!);
-
-        await mintingPage.mintingModal.expectCorrectTotalPrice(1, nftPrice);
-
-        for (let i = 2; i <= nftClaimLimit; i++) {
-            await mintingPage.mintingModal.increaseQuantity();
-            await mintingPage.mintingModal.expectCorrectTotalPrice(i, nftPrice);
-        }
-
-        await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
-        await test.info().attach('total-price-correct', {
-            body: await page.screenshot(),
-            contentType: 'image/png',
-        });
-    });
-
-
+      await mintingPage.mintingModal.container.scrollIntoViewIfNeeded();
+      await test.info().attach('total-price-correct', {
+         body: await page.screenshot(),
+         contentType: 'image/png',
+      });
+   });
 });

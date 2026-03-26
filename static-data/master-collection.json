@@ -1,17 +1,17 @@
 [
-    {
-        "id": 15,
-        "name": "Marley",
-        "description": "Full of boundless playfulness, turning every moment into a delightful game of joy."
-    },
-    {
-        "id": 16,
-        "name": "Finn",
-        "description": "Fearless explorer, leading the way to new experiences with unwavering curiosity."
-    },
-    {
-        "id": 17,
-        "name": "Luna",
-        "description": "Radiating an enchanting glow, lighting up the night and hearts with magical allure."
-    }
+   {
+      "id": 15,
+      "name": "Marley",
+      "description": "Full of boundless playfulness, turning every moment into a delightful game of joy."
+   },
+   {
+      "id": 16,
+      "name": "Finn",
+      "description": "Fearless explorer, leading the way to new experiences with unwavering curiosity."
+   },
+   {
+      "id": 17,
+      "name": "Luna",
+      "description": "Radiating an enchanting glow, lighting up the night and hearts with magical allure."
+   }
 ]

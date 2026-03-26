@@ -59,7 +59,7 @@ export const test = testWithSynpress(metaMaskFixtures(basicSetup)).extend<Fixtur
       const createFundedAccount = async (fundAmount: string) => {
          tempWallet = blockchainUtils.createRandomWallet();
          const tempAddress = await tempWallet.getAddress();
-         
+
          await blockchainUtils.fundAccount(MASTER_PRIVATE_KEY, tempAddress, fundAmount);
 
          console.log(`[Fixture] Importing account into MetaMask...`);

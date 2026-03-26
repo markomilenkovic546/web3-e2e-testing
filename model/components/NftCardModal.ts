@@ -23,7 +23,6 @@ export class NftCardModal {
          this.container.getByText(`1 of ${quantity} freshly minted NFTs shown.`, {
             exact: true,
          });
-
    }
 
    // --------------------------------------------------------------------------
@@ -87,7 +86,10 @@ export class NftCardModal {
     * @param {string} alt - The expected alt text.
     */
    async expectNftImageAltText(alt: string) {
-      await expect(this.nftImage, `Expect NFT image alt text to be "${alt}"`).toHaveAttribute('alt', alt);
+      await expect(this.nftImage, `Expect NFT image alt text to be "${alt}"`).toHaveAttribute(
+         'alt',
+         alt,
+      );
       console.log('Correct NFT image alt text is displayed');
    }
 
@@ -112,7 +114,13 @@ export class NftCardModal {
     * @param {number | string} quantity - The total number of freshly minted NFTs.
     */
    async expectShownNftCountMessageVisible(quantity: number | string) {
-      await expect(this.shownNftCountMessage(quantity), `Expect "1 of ${quantity} freshly minted NFTs shown." message to be visible`).toBeVisible();
-      console.log('Shown NFT message is visible:', `1 of ${quantity} freshly minted NFTs shown." message to be visible`);
+      await expect(
+         this.shownNftCountMessage(quantity),
+         `Expect "1 of ${quantity} freshly minted NFTs shown." message to be visible`,
+      ).toBeVisible();
+      console.log(
+         'Shown NFT message is visible:',
+         `1 of ${quantity} freshly minted NFTs shown." message to be visible`,
+      );
    }
 }

@@ -16,7 +16,6 @@ export class MintingModal {
    readonly claimedNftBtn: Locator;
    readonly mintingInfoMessage: Locator;
 
-
    constructor(page: Page) {
       this.page = page;
       this.container = page.locator('[data-cy="container-minting"]');
@@ -27,8 +26,7 @@ export class MintingModal {
       this.nftPrice = page.locator('[data-cy="price-total"]');
       this.nftBalancePerPhase = page.locator('[data-cy="nft-balance-per-phase"]');
       this.claimedNftBtn = page.locator('[data-cy="btn-claimed-nft"]');
-      this.mintingInfoMessage = page.locator('[data-cy="container-info-message"]')
-      
+      this.mintingInfoMessage = page.locator('[data-cy="container-info-message"]');
    }
 
    // --------------------------------------------------------------------------
@@ -107,7 +105,9 @@ export class MintingModal {
     */
    async getClaimedNftAltText(): Promise<string> {
       return await test.step('Get claimed NFT Alt text', async () => {
-         const altText = await this.claimedNftBtn.locator('[data-cy="img-nft-cat"]').getAttribute('alt');
+         const altText = await this.claimedNftBtn
+            .locator('[data-cy="img-nft-cat"]')
+            .getAttribute('alt');
          if (!altText) throw new Error('Alt text not found on claimed NFT image');
          return altText;
       });
@@ -123,7 +123,10 @@ export class MintingModal {
     * Asserts that the minting container is visible.
     */
    async expectContainerIsVisible() {
-      await expect(this.container, 'Expect minting container[container] to be visible').toBeVisible();
+      await expect(
+         this.container,
+         'Expect minting container[container] to be visible',
+      ).toBeVisible();
       console.log('Minting container is visible');
    }
 
@@ -141,8 +144,11 @@ export class MintingModal {
     */
    async expectMintingInfoMessage(message: string) {
       const infoMessage = this.mintingInfoMessage.getByText(message);
-      await expect(infoMessage, `Expect minting info message "${message}" to be visible`).toBeVisible({ timeout: 400000 });
-      console.log('Correct info message is displayed:', await infoMessage.textContent())
+      await expect(
+         infoMessage,
+         `Expect minting info message "${message}" to be visible`,
+      ).toBeVisible({ timeout: 400000 });
+      console.log('Correct info message is displayed:', await infoMessage.textContent());
    }
 
    // --- Quantity Controls ---
@@ -151,7 +157,10 @@ export class MintingModal {
     * Asserts that the increase quantity button is visible.
     */
    async expectIncreaseQuantityBtnIsVisible() {
-      await expect(this.increaseQuantityBtn, 'Expect increase quantity button[increaseQuantityBtn] to be visible').toBeVisible();
+      await expect(
+         this.increaseQuantityBtn,
+         'Expect increase quantity button[increaseQuantityBtn] to be visible',
+      ).toBeVisible();
       console.log('Increase quantity button is visible');
    }
 
@@ -159,7 +168,10 @@ export class MintingModal {
     * Asserts that the increase quantity button is enabled.
     */
    async expectIncreaseQuantityBtnIsEnabled() {
-      await expect(this.increaseQuantityBtn, 'Expect increase quantity button[increaseQuantityBtn] to be enabled').toBeEnabled();
+      await expect(
+         this.increaseQuantityBtn,
+         'Expect increase quantity button[increaseQuantityBtn] to be enabled',
+      ).toBeEnabled();
       console.log('Increase quantity button is enabled');
    }
 
@@ -167,7 +179,10 @@ export class MintingModal {
     * Asserts that the increase quantity button is disabled.
     */
    async expectIncreaseQuantityBtnIsDisabled() {
-      await expect(this.increaseQuantityBtn, 'Expect increase quantity button[increaseQuantityBtn] to be disabled').toBeDisabled();
+      await expect(
+         this.increaseQuantityBtn,
+         'Expect increase quantity button[increaseQuantityBtn] to be disabled',
+      ).toBeDisabled();
       console.log('Increase quantity button is disabled');
    }
 
@@ -175,7 +190,10 @@ export class MintingModal {
     * Asserts that the decrease quantity button is visible.
     */
    async expectDecreaseQuantityBtnIsVisible() {
-      await expect(this.decreaseQuantityBtn, 'Expect decrease quantity button[decreaseQuantityBtn] to be visible').toBeVisible();
+      await expect(
+         this.decreaseQuantityBtn,
+         'Expect decrease quantity button[decreaseQuantityBtn] to be visible',
+      ).toBeVisible();
       console.log('Decrease quantity button is visible');
    }
 
@@ -183,7 +201,10 @@ export class MintingModal {
     * Asserts that the decrease quantity button is enabled.
     */
    async expectDecreaseQuantityBtnIsEnabled() {
-      await expect(this.decreaseQuantityBtn, 'Expect decrease quantity button[decreaseQuantityBtn] to be enabled').toBeEnabled();
+      await expect(
+         this.decreaseQuantityBtn,
+         'Expect decrease quantity button[decreaseQuantityBtn] to be enabled',
+      ).toBeEnabled();
       console.log('Decrease quantity button is enabled');
    }
 
@@ -191,7 +212,10 @@ export class MintingModal {
     * Asserts that the decrease quantity button is disabled.
     */
    async expectDecreaseQuantityBtnIsDisabled() {
-      await expect(this.decreaseQuantityBtn, 'Expect decrease quantity button[decreaseQuantityBtn] to be disabled').toBeDisabled();
+      await expect(
+         this.decreaseQuantityBtn,
+         'Expect decrease quantity button[decreaseQuantityBtn] to be disabled',
+      ).toBeDisabled();
       console.log('Decrease quantity button is disabled');
    }
 
@@ -200,15 +224,24 @@ export class MintingModal {
     * @param {string} nftInputQuantity - The expected quantity value.
     */
    async expectCorrectNFTQuantity(nftInputQuantity: string) {
-      await expect(this.inputQuantity, `Expect NFT quantity input to have value "${nftInputQuantity}"`).toHaveAttribute('value', nftInputQuantity)
-      console.log('Correct NFT input quantity is displayed:', await this.inputQuantity.inputValue())
+      await expect(
+         this.inputQuantity,
+         `Expect NFT quantity input to have value "${nftInputQuantity}"`,
+      ).toHaveAttribute('value', nftInputQuantity);
+      console.log(
+         'Correct NFT input quantity is displayed:',
+         await this.inputQuantity.inputValue(),
+      );
    }
 
    /**
     * Asserts that the NFT quantity input is disabled.
     */
    async expectInputQuantityIsDisabled() {
-      await expect(this.inputQuantity, 'Expect NFT quantity input[inputQuantity] to be disabled').toBeDisabled();
+      await expect(
+         this.inputQuantity,
+         'Expect NFT quantity input[inputQuantity] to be disabled',
+      ).toBeDisabled();
       console.log('NFT quantity input is disabled');
    }
 
@@ -242,10 +275,12 @@ export class MintingModal {
     * Asserts that the claimed NFT button is visible.
     */
    async expectClaimedNftBtnIsVisible() {
-      await expect(this.claimedNftBtn, 'Expect claimed NFT button[claimedNftBtn] to be visible').toBeVisible();
+      await expect(
+         this.claimedNftBtn,
+         'Expect claimed NFT button[claimedNftBtn] to be visible',
+      ).toBeVisible();
       console.log('Claimed NFT button is visible');
    }
-
 
    // --- Business Logic & Data ---
 
@@ -255,9 +290,12 @@ export class MintingModal {
     * @param {number} nftPricePerUnit - The price per individual NFT.
     */
    async expectCorrectTotalPrice(quantity: number, nftPricePerUnit: number) {
-      const calculatedTotalPrice = Number((quantity * nftPricePerUnit).toFixed(3))
-      await expect(this.nftPrice, `Expect total price to be: ${calculatedTotalPrice} POL`).toHaveText(`Total price: ${calculatedTotalPrice} POL`)
-      console.log('Correct total price is displayed:', await this.nftPrice.textContent())
+      const calculatedTotalPrice = Number((quantity * nftPricePerUnit).toFixed(3));
+      await expect(
+         this.nftPrice,
+         `Expect total price to be: ${calculatedTotalPrice} POL`,
+      ).toHaveText(`Total price: ${calculatedTotalPrice} POL`);
+      console.log('Correct total price is displayed:', await this.nftPrice.textContent());
    }
 
    /**
@@ -266,8 +304,13 @@ export class MintingModal {
     */
    async expectCorrectBalancePerPhase(balancePerPhase: number) {
       const nftLabel = balancePerPhase <= 1 ? 'NFT' : 'NFTs';
-      await expect(this.nftBalancePerPhase, `Expect balance per phase to be: ${balancePerPhase} of ${process.env.MAX_NFTS_PER_PHASE} ${nftLabel} claimed`).
-         toHaveText(`${balancePerPhase} of ${process.env.MAX_NFTS_PER_PHASE} ${nftLabel} claimed`)
-      console.log('Correct balance per phase info is displayed:', await this.nftBalancePerPhase.textContent())
+      await expect(
+         this.nftBalancePerPhase,
+         `Expect balance per phase to be: ${balancePerPhase} of ${process.env.MAX_NFTS_PER_PHASE} ${nftLabel} claimed`,
+      ).toHaveText(`${balancePerPhase} of ${process.env.MAX_NFTS_PER_PHASE} ${nftLabel} claimed`);
+      console.log(
+         'Correct balance per phase info is displayed:',
+         await this.nftBalancePerPhase.textContent(),
+      );
    }
 }

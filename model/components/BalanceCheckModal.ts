@@ -34,7 +34,10 @@ export class BalanceCheckModal {
     * Asserts that the balance check container is visible.
     */
    async expectContainerIsVisible() {
-      await expect(this.container, 'Expect balance check container[container] to be visible').toBeVisible();
+      await expect(
+         this.container,
+         'Expect balance check container[container] to be visible',
+      ).toBeVisible();
       console.log('Balance check container is visible');
    }
 
@@ -42,7 +45,10 @@ export class BalanceCheckModal {
     * Asserts that the balance check container is not visible.
     */
    async expectContainerIsNotVisible() {
-      await expect(this.container, 'Expect balance check container[container] to be hidden').toBeHidden();
+      await expect(
+         this.container,
+         'Expect balance check container[container] to be hidden',
+      ).toBeHidden();
       console.log('Balance check container is not visible');
    }
 
@@ -53,7 +59,10 @@ export class BalanceCheckModal {
    async expectLowBalanceMessage(balance: string) {
       await test.step(`Check for low balance message: ${balance} POL`, async () => {
          const message = `You're low on POL!Your current balance is ${balance} POL.`;
-         await expect(this.container, `Expect low balance message for ${balance} POL to be displayed`).toContainText(message);
+         await expect(
+            this.container,
+            `Expect low balance message for ${balance} POL to be displayed`,
+         ).toContainText(message);
          console.log(`Low balance message for ${balance} POL is displayed`);
       });
    }
@@ -64,7 +73,10 @@ export class BalanceCheckModal {
     * Asserts that the "Recheck" button is visible.
     */
    async expectRecheckBtnIsVisible() {
-      await expect(this.recheckBtn, 'Expect recheck button[recheckBtn] to be visible').toBeVisible();
+      await expect(
+         this.recheckBtn,
+         'Expect recheck button[recheckBtn] to be visible',
+      ).toBeVisible();
       console.log('Recheck button is visible');
    }
 
@@ -80,7 +92,10 @@ export class BalanceCheckModal {
     * Asserts that the "Recheck" button is enabled.
     */
    async expectRecheckBtnIsEnabled() {
-      await expect(this.recheckBtn, 'Expect recheck button[recheckBtn] to be enabled').toBeEnabled();
+      await expect(
+         this.recheckBtn,
+         'Expect recheck button[recheckBtn] to be enabled',
+      ).toBeEnabled();
       console.log('Recheck button is enabled');
    }
 }

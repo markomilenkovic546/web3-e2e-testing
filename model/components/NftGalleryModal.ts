@@ -6,7 +6,7 @@ export class NftGalleryModal {
    readonly container: Locator;
    readonly closeModalBtn: Locator;
    readonly disconnectBtn: Locator;
-   readonly nftItemButton: (nftId: string) =>  Locator;
+   readonly nftItemButton: (nftId: string) => Locator;
    readonly nftCard: Locator;
    readonly nftCardTitle: Locator;
    readonly nftCardDescription: Locator;
@@ -19,13 +19,13 @@ export class NftGalleryModal {
       this.container = page.locator('[data-cy="container-nft-gallery"]');
       this.closeModalBtn = page.locator('[data-cy="btn-modal-close"]');
       this.disconnectBtn = page.locator('[data-cy="btn-disconnect"]');
-      this.nftItemButton = (nftId) =>  page.locator(`[data-cy="btn-nft-item-${nftId}"]`)
+      this.nftItemButton = (nftId) => page.locator(`[data-cy="btn-nft-item-${nftId}"]`);
       this.nftCard = page.locator('[data-cy="nft-card"]');
       this.nftCardTitle = page.locator('[data-cy="nft-card"] h4');
       this.nftCardDescription = page.locator('[data-cy="nft-card"] p');
       this.nftId = page.locator('[data-cy="href-nft"]');
       this.nftImage = page.locator('[data-cy="nft-card"] figure img');
-      this.walletBalance = page.locator('.mr-2.text-sm.font-bold')
+      this.walletBalance = page.locator('.mr-2.text-sm.font-bold');
    }
 
    // --------------------------------------------------------------------------
@@ -55,7 +55,10 @@ export class NftGalleryModal {
    async clickOnNft(nftId: string) {
       await test.step(`Click on NFT with ID: ${nftId}`, async () => {
          const nftItem = this.getNftItem(nftId);
-         await expect(nftItem, `Expect NFT item with ID ${nftId}[nftItem] to be visible`).toBeVisible();
+         await expect(
+            nftItem,
+            `Expect NFT item with ID ${nftId}[nftItem] to be visible`,
+         ).toBeVisible();
          await nftItem.click();
          console.log(`NFT item with ID ${nftId} is clicked`);
       });
@@ -83,7 +86,10 @@ export class NftGalleryModal {
     * Asserts that the NFT Gallery container is visible.
     */
    async expectContainerIsVisible() {
-      await expect(this.container, 'Expect NFT Gallery container[container] to be visible').toBeVisible();
+      await expect(
+         this.container,
+         'Expect NFT Gallery container[container] to be visible',
+      ).toBeVisible();
       console.log('NFT Gallery container is visible');
    }
 
@@ -91,7 +97,10 @@ export class NftGalleryModal {
     * Asserts that the NFT Gallery container is not visible.
     */
    async expectContainerIsNotVisible() {
-      await expect(this.container, 'Expect NFT Gallery container[container] to be hidden').toBeHidden();
+      await expect(
+         this.container,
+         'Expect NFT Gallery container[container] to be hidden',
+      ).toBeHidden();
       console.log('NFT Gallery container is not visible');
    }
 
@@ -99,7 +108,10 @@ export class NftGalleryModal {
     * Asserts that the close modal button is visible.
     */
    async expectCloseModalBtnIsVisible() {
-      await expect(this.closeModalBtn, 'Expect close modal button[closeModalBtn] to be visible').toBeVisible();
+      await expect(
+         this.closeModalBtn,
+         'Expect close modal button[closeModalBtn] to be visible',
+      ).toBeVisible();
       console.log('Close modal button is visible');
    }
 
@@ -107,7 +119,10 @@ export class NftGalleryModal {
     * Asserts that the disconnect button is visible.
     */
    async expectDisconnectBtnIsVisible() {
-      await expect(this.disconnectBtn, 'Expect disconnect button[disconnectBtn] to be visible').toBeVisible();
+      await expect(
+         this.disconnectBtn,
+         'Expect disconnect button[disconnectBtn] to be visible',
+      ).toBeVisible();
       console.log('Disconnect button is visible');
    }
 
@@ -115,7 +130,10 @@ export class NftGalleryModal {
     * Asserts that the disconnect button is not visible.
     */
    async expectDisconnectBtnIsNotVisible() {
-      await expect(this.disconnectBtn, 'Expect disconnect button[disconnectBtn] to be hidden').toBeHidden();
+      await expect(
+         this.disconnectBtn,
+         'Expect disconnect button[disconnectBtn] to be hidden',
+      ).toBeHidden();
       console.log('Disconnect button is not visible');
    }
 
@@ -142,7 +160,10 @@ export class NftGalleryModal {
     * @param {string} nftId - The ID of the NFT.
     */
    async expectNftItemButtonIsVisible(nftId: string) {
-      await expect(this.nftItemButton(nftId), `Expect NFT item button for ID ${nftId} to be visible`).toBeVisible();
+      await expect(
+         this.nftItemButton(nftId),
+         `Expect NFT item button for ID ${nftId} to be visible`,
+      ).toBeVisible();
       console.log(`NFT item button for ID ${nftId} is visible`);
    }
 
@@ -169,7 +190,10 @@ export class NftGalleryModal {
     * @param {string} alt - The expected alt text.
     */
    async expectNftImageAltText(alt: string) {
-      await expect(this.nftImage, `Expect NFT image alt text to be "${alt}"`).toHaveAttribute('alt', alt);
+      await expect(this.nftImage, `Expect NFT image alt text to be "${alt}"`).toHaveAttribute(
+         'alt',
+         alt,
+      );
       console.log('Correct NFT image alt text is displayed');
    }
 
@@ -178,8 +202,14 @@ export class NftGalleryModal {
     * @param {string} description - The expected description.
     */
    async expectNftCardDescription(description: string) {
-      await expect(this.nftCardDescription, `Expect NFT card description to be "${description}"`).toHaveText(description);
-      console.log('Correct NFT card description is displayed:', await this.nftCardDescription.textContent());
+      await expect(
+         this.nftCardDescription,
+         `Expect NFT card description to be "${description}"`,
+      ).toHaveText(description);
+      console.log(
+         'Correct NFT card description is displayed:',
+         await this.nftCardDescription.textContent(),
+      );
    }
 
    /**
@@ -187,7 +217,10 @@ export class NftGalleryModal {
     * @param {string} balance - The expected balance value (e.g., "4.2151").
     */
    async expectCorrectWalletBalance(balance: string) {
-      await expect(this.walletBalance, `Expect wallet balance[walletBalance] to contain text "Balance: ${balance} POL"`).toContainText(`Balance: ${balance} POL`);
+      await expect(
+         this.walletBalance,
+         `Expect wallet balance[walletBalance] to contain text "Balance: ${balance} POL"`,
+      ).toContainText(`Balance: ${balance} POL`);
       console.log(`Wallet balance (${balance} POL) verified successfully!`);
    }
 }

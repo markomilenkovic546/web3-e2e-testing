@@ -4,16 +4,16 @@
    "description": "",
    "type": "module",
    "main": "index.js",
-  "scripts": {
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "lint": "npm run format:check && npx tsc --noEmit",
-    "e2e": "playwright test",
-    "e2e:account": "playwright test --grep @account",
-    "e2e:balance": "playwright test --grep @balance-check",
-    "e2e:connection": "playwright test --grep @connection",
-    "e2e:minting": "playwright test --grep @minting"
-  },
+   "scripts": {
+      "format": "prettier --write .",
+      "format:check": "prettier --check .",
+      "lint": "npm run format:check && npx tsc --noEmit",
+      "e2e": "playwright test",
+      "e2e:account": "playwright test --grep @account",
+      "e2e:balance": "playwright test --grep @balance-check",
+      "e2e:connection": "playwright test --grep @connection",
+      "e2e:minting": "playwright test --grep @minting"
+   },
    "keywords": [],
    "author": "",
    "license": "ISC",

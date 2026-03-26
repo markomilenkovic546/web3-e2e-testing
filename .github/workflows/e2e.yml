@@ -1,42 +1,42 @@
 name: E2E Tests
 on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+   push:
+      branches: [main]
+   workflow_dispatch:
 
 jobs:
-  test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 'lts/*'
-        cache: 'yarn'
+   test:
+      timeout-minutes: 60
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
+         - name: Setup Node.js
+           uses: actions/setup-node@v4
+           with:
+              node-version: 'lts/*'
+              cache: 'yarn'
 
-    - name: Install Playwright Chrome
-      run: npx playwright install chromium
+         - name: Install dependencies
+           run: yarn install --frozen-lockfile
 
-    - name: Create .env file
-      run: |
-        echo "${{ secrets.ENV_FILE }}" > .env
+         - name: Install Playwright Chrome
+           run: npx playwright install chromium
 
-    - name: Run Synpress (Create MetaMask Cache)
-      run: xvfb-run npx synpress
+         - name: Create .env file
+           run: |
+              echo "${{ secrets.ENV_FILE }}" > .env
 
-    - name: Run Playwright tests
-      run: xvfb-run yarn e2e
+         - name: Run Synpress (Create MetaMask Cache)
+           run: xvfb-run npx synpress
 
-    - name: Upload Test Report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: test-results/
-        retention-days: 30
+         - name: Run Playwright tests
+           run: xvfb-run yarn e2e
+
+         - name: Upload Test Report
+           if: always()
+           uses: actions/upload-artifact@v4
+           with:
+              name: test-results
+              path: test-results/
+              retention-days: 30
