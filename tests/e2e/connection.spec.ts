@@ -5,7 +5,7 @@ test.describe('Connection @connection', () => {
       await mintingPage.goto();
    });
 
-   test('User connects the wallet successfully', async ({
+   test('User should be able to connect the wallet successfully', async ({
       mintingPage,
       metamask,
       masterAccount,
@@ -28,7 +28,7 @@ test.describe('Connection @connection', () => {
       });
    });
 
-   test('User disconnects the wallet successfully', async ({
+   test('User should be able to disconnect the wallet successfully', async ({
       mintingPage,
       metamask,
       masterAccount,
@@ -59,7 +59,7 @@ test.describe('Connection @connection', () => {
       });
    });
 
-   test('dApp behaves as expected when a user changes the network while the wallet is connected', async ({
+   test('User should be able to recover wallet connection after switching networks', async ({
       mintingPage,
       metamask,
       masterAccount,

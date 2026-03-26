@@ -5,7 +5,7 @@ test.describe('Minting flow @minting', () => {
         await mintingPage.goto();
     });
 
-    test('User connects a wallet with no NFTs and the minting modal displays the correct state', async ({
+    test('Minting modal should show correct default state for wallet with no NFTs', async ({
         mintingPage,
         metamask,
         mintAccount,
@@ -41,7 +41,7 @@ test.describe('Minting flow @minting', () => {
         });
     });
 
-    test('User connects a wallet with multiple NFTs and the minting modal displays the correct state', async ({
+    test('Minting modal should show correct default state for wallet with multiple NFTs', async ({
         mintingPage,
         metamask,
         masterAccount,
@@ -77,7 +77,7 @@ test.describe('Minting flow @minting', () => {
         });
     });
 
-    test('User connects a wallet with maxiumum NFTs and the minting modal displays the correct state', async ({
+    test('Minting modal should show correct default state for wallet with reached max number of NFTs and prevents user to mint', async ({
         mintingPage,
         metamask,
         maxMintedAccount,
@@ -114,7 +114,7 @@ test.describe('Minting flow @minting', () => {
             contentType: 'image/png',
         });
     });
-    test('User mints a single NFT and and procceeds to NFT gallery to view the minted NFTs', async ({
+    test('User should be able to complete NFT mint flow', async ({
         mintingPage,
         metamask,
         mintAccount,
@@ -223,7 +223,7 @@ test.describe('Minting flow @minting', () => {
         console.log('[Blockchain] NFT owner:', nftOwner)
     });
 
-    test('User mints a single NFT, closes the modal, and mints another NFT', async ({
+    test('User should be able to mint NFTs sequentially', async ({
         mintingPage,
         metamask,
         mintAccount,
@@ -363,7 +363,7 @@ test.describe('Minting flow @minting', () => {
     });
 
 
-    test('User rejects transaction for minting, then mints again successfully', async ({
+    test('User should be able to retry minting after rejecting transaction', async ({
         mintingPage,
         metamask,
         mintAccount,
@@ -441,7 +441,7 @@ test.describe('Minting flow @minting', () => {
     });
 
 
-    test('User mints multiple NFTs at once', async ({
+    test('User should be able to mint multiple NFTs at once', async ({
         mintingPage,
         metamask,
         mintAccount,
@@ -517,7 +517,7 @@ test.describe('Minting flow @minting', () => {
     });
 
 
-    test('User cannot set the quantity value lower than 1', async ({
+    test('User should not be able to set NFT quantity lower than 1', async ({
         mintingPage,
         metamask,
         masterAccount,
@@ -540,7 +540,7 @@ test.describe('Minting flow @minting', () => {
         });
     });
 
-    test('User cannot increment quantity beyond the maximum allowed per phase', async ({
+    test('User should not be able to increment NFT quantity beyond max per phase', async ({
         mintingPage,
         metamask,
         mintAccount,
@@ -562,7 +562,7 @@ test.describe('Minting flow @minting', () => {
             contentType: 'image/png',
         });
     });
-    test('Max quantity limit adjusts accordingly after a successful mint', async ({
+    test('User should see max NFT quantity adjust correctly after a successful mint', async ({
         mintingPage,
         page,
         metamask,
@@ -619,7 +619,7 @@ test.describe('Minting flow @minting', () => {
 
 
 
-    test('NFT total price is correct according to quantity value', async ({
+    test('NFT total price should update correctly according to quantity', async ({
         mintingPage,
         metamask,
         mintAccount,

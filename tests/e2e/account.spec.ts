@@ -6,7 +6,7 @@ test.describe('Account @account', () => {
         await mintingPage.goto();
     });
 
-    test('Account button displays the correct NFT balance after wallet connection', async ({
+    test('Account button should display correct NFT balance after connecting wallet', async ({
         mintingPage,
         metamask,
         masterAccount,
@@ -30,7 +30,7 @@ test.describe('Account @account', () => {
         });
     });
 
-    test('NFT Gallery modal displays the correct POL balance', async ({
+    test('NFT Gallery modal should display correct POL balance', async ({
         mintingPage,
         metamask,
         masterAccount,
@@ -55,7 +55,7 @@ test.describe('Account @account', () => {
         });
     });
 
-    test('NFT Gallery modal closes after clicking the close button', async ({
+    test('NFT Gallery modal should close when clicking the close button', async ({
         mintingPage,
         metamask,
         masterAccount,
@@ -79,7 +79,7 @@ test.describe('Account @account', () => {
         });
     });
 
-    test('Gallery modal displays all NFTs from user\'s collection', async ({
+    test('NFT Gallery modal should display all NFTs from user\'s collection', async ({
         mintingPage,
         metamask,
         masterAccount,
@@ -105,7 +105,7 @@ test.describe('Account @account', () => {
         });
     });
 
-    test('Gallery modal displays correct NFT details when selecting NFT', async ({
+    test('NFT Gallery modal should display correct details when selecting an NFT', async ({
         mintingPage,
         metamask,
         masterAccount,

@@ -5,7 +5,7 @@ test.describe('Balance check @balance-check', () => {
         await mintingPage.goto();
     });
 
-    test('Balance check modal is not displayed when funds are sufficient', async ({
+    test('Balance check modal should not appear when funds are sufficient', async ({
         mintingPage,
         metamask,
         mintAccount,
@@ -29,7 +29,7 @@ test.describe('Balance check @balance-check', () => {
         });
     });
 
-    test('User cannot mint if funds are insufficient', async ({
+    test('User should not be able to mint with insufficient funds', async ({
         mintingPage,
         metamask,
         mintAccount,
@@ -53,7 +53,7 @@ test.describe('Balance check @balance-check', () => {
         });
     });
 
-    test('User cannot mint after rechecking insufficient balance', async ({
+    test('User should not be able to mint after rechecking insufficient balance', async ({
         mintingPage,
         metamask,
         mintAccount,
