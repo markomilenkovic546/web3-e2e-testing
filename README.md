@@ -3,7 +3,7 @@
 This project is a showcase of an E2E testing framework designed for decentralized applications (dApps), specifically focusing on NFT minting.
 
 The application under test is **Sitting Cats NFT**, a minting platform developed by my friend and colleague [Danilo](https://www.linkedin.com/in/danilo-bozinovic/).
-**App URL:** [https://sitting-cats.vercel.app/](https://sitting-cats.vercel.app/)
+**App URL:** [https://sitting-cats.vercel.app/](https://sitting-cats-nft.vercel.app/)
 
 ---
 
